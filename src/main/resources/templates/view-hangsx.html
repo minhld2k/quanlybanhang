@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/layout-admin}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/hangsx.js}"></script>
+
+<script th:src="@{/js/bootstrap-multiselect.js}"></script>
+<link rel="stylesheet" th:href="@{/css/bootstrap-multiselect.css}" />
+</head>
+<body>
+
+	<article layout:fragment="content-admin">
+		<div class="container">
+			<div class="row"
+				style="background-color: darkgrey; padding: 0; margin: 0;">
+				<div class="col-sm-6">
+					<h3 style="padding: 0; margin-top: 10px;">Danh sách Hãng sản
+						xuất</h3>
+				</div>
+				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
+					<button type="button" class="btn btn-danger deleteButton"
+						style="float: right; margin-left: 10px; margin-right: 10px;">
+						<span class="glyphicon glyphicon-trash"></span>DELETE
+					</button>
+					<button type="button" class="btn btn-primary addButton"
+						style="float: right;">
+						<span class="glyphicon glyphicon-plus"></span>Add new
+					</button>
+
+				</div>
+			</div>
+
+			<form action="/hangsx/dataSearch" style="margin-top: 10px;">
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Tên Hãng sản xuất:</label> <input
+							type="text" placeholder="Nhập name cần tìm" name="keywords"
+							class="form-control" th:value="${session.NAMESEARCH}" />
+					</div>
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Danh mục:</label> 
+						<select class="form-control" id="categorySearch" name="categorySearch[]"
+							multiple>
+							<option th:each="item: ${CATEGORIES}" th:value="${item.id}"
+								th:text="${item.categoryname}"></option>
+						</select>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary"
+					style="margin-top: 10px; margin-bottom: 10px; float: right;">
+					<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+				</button>
+			</form>
+
+			<th:block th:if="${null == HANGSXS}">
+				<h3 style="text-align: center;" th:text="${session.MESLIST}"></h3>
+			</th:block>
+			<th:block th:unless="${null == HANGSXS}">
+				<form th:action="@{/hangsx/deleteAll}" method="get" id="formDelete">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th><input id="selectAll" type="checkbox"></th>
+								<th>NAME</th>
+								<th>KEY</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="item: ${HANGSXS}">
+								<td><input type="checkbox" name="id[]"
+									th:value="${item.id}"></td>
+								<td th:text="${item.name}"></td>
+								<td th:text="${item.key}"></td>
+								<td><a th:href="@{/hangsx/oneHangsx/(id=${item.id})}"
+									class="btn btn-warning editButton">Edit</a>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+				<div class="row">
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<form class="form-inline" action="/hangsx/pagesize" method="post">
+							<input type="number" placeholder="Nhập số dòng trên trang"
+								name="pagesize" class="form-control"
+								th:value="${session.PAGESIZE}" />
+							<button type="submit" class="btn btn-primary"
+								style="margin-left: 10px;">Hiển thị</button>
+						</form>
+					</div>
+
+					<div class="col-sm-4">
+						<ul class="pagination justify-content-center">
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${1}|}">First</a>
+							</li>
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+								<a class="page-link" aria-label="Previous"
+								th:href="@{|${baseUrl}${currentIndex - 1}|}"
+								title='Go to previous page'><span aria-hidden="true">«</span>
+									<span class="sr-only">Previous</span></a>
+							</li>
+							<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+								th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+								<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+									th:text='${item}'>1</span>
+							</a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+								<a class="page-link" aria-label="Next"
+								th:href="@{|${baseUrl}${currentIndex + 1}|}"
+								title='Go to next page'><span aria-hidden="true">»</span> <span
+									class="sr-only">Next</span></a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<p style="text-align: center">
+							TỔNG SỐ RECORD : <label th:text="${session.COUNT}"></label>
+						</p>
+					</div>
+
+				</div>
+			</th:block>
+		</div>
+
+		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/hangsx/addNew}" method="post" id="formAdd"
+				onsubmit="return formAddValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">New Hãng sản
+								xuất</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idAdd" name="id">
+							</div>
+							<div class="form-group">
+								<label for="key" class="col-form-label">Mã hãng sản
+									xuất(<label style="color: red">*</label>):
+								</label> <input type="text" class="form-control" id="keyAdd" name="key">
+							</div>
+							<p id="errorkeyAdd" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="name" class="col-form-label">Tên hãng sản
+									xuất(<label style="color: red">*</label>):
+								</label> <input type="text" class="form-control" id="nameAdd"
+									name="name">
+							</div>
+							<p id="errornameAdd" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Danh mục(<label
+									style="color: red">*</label>)
+								</label> <select class="form-control" id="categoryAdd" name="category[]"
+									multiple>
+									<option th:each="item: ${CATEGORIES}" th:value="${item.id}"
+										th:text="${item.categoryname}"></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/hangsx/save}" method="put" id="formEdit"
+				onsubmit="return formEditValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Edit hãng sản
+								xuất</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idEdit" name="id">
+							</div>
+
+							<div class="form-group">
+								<label for="key" class="col-form-label">Mã Hãng sản
+									xuất(<label style="color: red">*</label>):
+								</label> <input type="text" class="form-control" id="keyEdit" name="key">
+							</div>
+							<p id="errorkeyEdit" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="name" class="col-form-label">Tên Hãng sản
+									xuất(<label style="color: red">*</label>):
+								</label> <input type="text" class="form-control" id="nameEdit"
+									name="name">
+							</div>
+							<p id="errornameEdit" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Danh mục(<label
+									style="color: red">*</label>)
+								</label> <select class="form-control" id="categoryEdit"
+									name="category[]" multiple>
+									<option th:each="item: ${CATEGORIES}" th:value="${item.id}"
+										th:text="${item.categoryname}"></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirm delete</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="deleteId">Yes</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</article>
+</body>
+</html>

@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/layout-admin}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+
+<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/product.js}"></script>
+
+<script th:src="@{/js/bootstrap-multiselect.js}"></script>
+<link rel="stylesheet" th:href="@{/css/bootstrap-multiselect.css}" />
+<style type="text/css">
+	.table > tbody > tr > td{
+		vertical-align: middle;
+	}
+</style>
+</head>
+<body>
+
+	<article layout:fragment="content-admin">
+		<div class="container">
+			<div class="row"
+				style="background-color: darkgrey; padding: 0; margin: 0;">
+				<div class="col-sm-6">
+					<h3 style="padding: 0; margin-top: 10px;">Danh sách sản phẩm</h3>
+				</div>
+				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
+					<button type="button" class="btn btn-danger deleteButton"
+						style="float: right; margin-left: 10px; margin-right: 10px;">
+						<span class="glyphicon glyphicon-trash"></span>DELETE
+					</button>
+					
+					<button type="button" class="btn btn-primary addButton"
+						 style="float: right;">
+						<span class="glyphicon glyphicon-plus"></span>Add new
+					</button>
+				</div>
+			</div>
+			
+			<form action="/sanpham/dataSearch" style="margin-top: 10px;" id="formFind">
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Tên sản phẩm:</label> <input
+							type="text" placeholder="Nhập name cần tìm" name="namefind"
+							class="form-control" th:value="${session.NAMEFIND}" />
+					</div>
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Loại sản phẩm:</label> 
+				        <select class="form-control" id="categoryfind" name="categoryfind" multiple>
+									<option th:each="item:${CATEGORIES}"
+										th:value="${item.id}" th:text="${item.categoryname}"></option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="row" style="margin-top: 10px;">
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Hãng Sản xuất:</label> 
+				        <select class="form-control" id="hangsxfind" name="hangsxfind" multiple>
+									<option th:each="item: ${HANGSXES}"
+										th:value="${item.id}" th:text="${item.name}"></option>
+						</select>
+					</div>
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Trạng thái:</label> 
+				        <select class="form-control" name="trangthaifind" id="trangthaifind" multiple >
+							<option value="1">Còn hàng</option>
+							<option value="2">Hết hàng</option>
+							<option value="3">Gần hết hàng</option>
+						</select>
+					</div>
+				</div>
+				
+				<button type="submit" class="btn btn-primary"
+					style="margin-top: 10px; margin-bottom: 10px; float: right;">
+					<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+				</button>
+			</form>
+			
+			<th:block th:if="${null == PRODUCTS}">
+				<h3 style="text-align: center;" th:text="${session.MESLIST}"></h3>
+			</th:block>
+			<th:block th:unless="${null == PRODUCTS}">
+				<form th:action="@{/sanpham/deleteAll}" method="get" id="formDelete">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th><input id="selectAll" type="checkbox"></th>
+								<th>IMAGE</th>
+								<th>Tên sản phẩm</th>
+								<th>Số lượng</th>
+								<th>Giá tiền</th>
+								<th>Danh mục</th>
+								<th>Hãng sản xuất</th>
+								<th>Trạng thái</th>
+								<th>EDIT</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item: ${PRODUCTS}">
+								<td><input type="checkbox" name="id[]"
+									th:value="${item.id}"></td> 
+								<td width="100"><img alt=""
+									th:src="@{'/getimage/'+ ${item.image}}" width="80" height="70"></td>
+								<td>
+									<a th:href="@{/sanpham/oneProduct/(id=${item.id})}" class="view"><label th:text="${item.tensanpham}"></label></a>
+								</td>
+								<td th:text="${item.soluong}"></td>
+								<td th:text="${item.giatien}"></td>
+								<td th:text="${item.category.categoryname}"></td>
+								<td th:text="${item.hangsx.name}"></td>
+								<th:block th:if="${item.trangthai == 1}">
+									<td>Còn hàng</td>
+								</th:block>
+								<th:block th:if="${item.trangthai == 2}">
+									<td>Hết hàng</td>
+								</th:block>
+								<th:block th:if="${item.trangthai == 3}">
+									<td>Gần hết hàng</td>
+								</th:block>
+								
+								<td><a th:href="@{/user/oneUser/(id=${item.id})}"
+									class="btn btn-warning editButton">Edit</a>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+				<div class="row">
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<form class="form-inline" action="/sanpham/pagesize" method="post">
+							<input type="number" placeholder="Nhập số dòng trên trang"
+								name="pagesize" class="form-control"
+								th:value="${session.PAGESIZE}" />
+							<button type="submit" class="btn btn-primary"
+								style="margin-left: 10px;">Hiển thị</button>
+						</form>
+					</div>
+
+					<div class="col-sm-4">
+						<ul class="pagination justify-content-center">
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${1}|}">First</a>
+							</li>
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+								<a class="page-link" aria-label="Previous"
+								th:href="@{|${baseUrl}${currentIndex - 1}|}"
+								title='Go to previous page'><span aria-hidden="true">«</span>
+									<span class="sr-only">Previous</span></a>
+							</li>
+							<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+								th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+								<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+									th:text='${item}'>1</span>
+							</a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+								<a class="page-link" aria-label="Next"
+								th:href="@{|${baseUrl}${currentIndex + 1}|}"
+								title='Go to next page'><span aria-hidden="true">»</span> <span
+									class="sr-only">Next</span></a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<p style="text-align: center">
+							TỔNG SỐ RECORD : <label th:text="${session.COUNT}"></label>
+						</p>
+					</div>
+
+				</div>
+			</th:block>
+		</div>
+		
+		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/sanpham/addNew}" method="post" id="formAdd" enctype="multipart/form-data"
+				onsubmit="return formAddValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">New Product</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idAdd" name="id">
+							</div>
+							<div class="form-group">
+								<label for="email" class="col-form-label">Tên sản phẩm(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="tensanphamAdd" name="tensanpham">
+							</div>
+							<p id="errorTensanphamAdd" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="fullname" class="col-form-label">Số lượng<strong>*</strong>:</label> <input
+									type="number" class="form-control" id="soluongAdd" name="soluong">
+							</div>
+							<p id="errorSoluongAdd" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="phone" class="col-form-label">Giá tiền<strong>*</strong>:</label> <input
+									type="text" class="form-control" id="giatienAdd" name="giatien">
+							</div>
+							<p id="errorGiatienAdd" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Ram:</label> <input
+									type="text" class="form-control" id="ramAdd" name="ram">
+							</div>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Màn hình:</label> <input
+									type="text" class="form-control" id="manhinhAdd" name="manhinh">
+							</div>
+							
+							<div class="form-group">
+								<label>Trạng thái(<label style="color: red">*</label>)</label>
+								<div class="form-check form-check-inline">
+									<!--value = 1 => Còn hàng| 2 =>hết hàng|3 =>Gần hết hàng -->
+									<label class="form-check-label" style="margin-right: 20px;"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="1" id="trangthaiAdd"> Còn hàng
+									</label> 
+									<label class="form-check-label" style="margin-right: 20px;"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="2" id="trangthaiAdd"> Hết hàng
+									</label>
+									<label class="form-check-label"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="3" id="trangthaiAdd"> Gần hết hàng
+									</label>
+								</div>
+							</div>
+							<p id="errorGenderAdd" style="color: red"></p>
+							
+							<div class="form-group">
+							<label>Hình ảnh</label> <input type="file" class="form-control" 
+								name="image" placeholder="Enter photo" id="imageAdd">
+							</div>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Mô tả:</label> 
+								<textarea class="form-control" rows="2" name="mota" id="motaAdd"></textarea>
+							</div>
+							
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Loại sản phẩm(<label style="color: red">*</label>):</label> 
+				        		<select class="form-control" id="categoryAdd" name="category" >
+									<option th:each="item:${CATEGORIES}"
+										th:value="${item.id}" th:text="${item.categoryname}"></option>
+								</select>
+							</div>
+							<p id="errorCategoryAdd" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Hãng sản xuất<strong>*</strong></label> 
+				        		<select class="form-control" id="hangsxAdd" name="hangsx" >
+									<option th:each="item: ${HANGSXES}"
+										th:value="${item.id}" th:text="${item.name}"></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" id="add">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/sanpham/save}" method="put" id="formEdit" name ="formEdit" enctype="multipart/form-data"
+				onsubmit="return formEditValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idEdit" name="id">
+							</div>
+							<div class="form-group">
+								<label for="email" class="col-form-label">Tên sản phẩm(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="tensanphamEdit" name="tensanpham">
+							</div>
+							<p id="errorTensanphamEdit" style="color: red"></p>
+
+							<div class="form-group">
+								<label for="fullname" class="col-form-label">Số lượng<strong>*</strong>:</label> <input
+									type="number" class="form-control" id="soluongEdit" name="soluong">
+							</div>
+							<p id="errorSoluongEdit" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="phone" class="col-form-label">Giá tiền<strong>*</strong>:</label> <input
+									type="text" class="form-control" id="giatienEdit" name="giatien">
+							</div>
+							<p id="errorGiatienEdit" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Ram:</label> <input
+									type="text" class="form-control" id="ramEdit" name="ram">
+							</div>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Màn hình:</label> <input
+									type="text" class="form-control" id="manhinhEdit" name="manhinh">
+							</div>
+							
+							<div class="form-group">
+								<label>Trạng thái(<label style="color: red">*</label>)</label>
+								<div class="form-check form-check-inline">
+									<!--value = 1 => Còn hàng| 2 =>hết hàng|3 =>Gần hết hàng -->
+									<label class="form-check-label" style="margin-right: 20px;"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="1" id="trangthaiEdit"> Còn hàng
+									</label> 
+									<label class="form-check-label" style="margin-right: 20px;"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="2" id="trangthaiEdit"> Hết hàng
+									</label>
+									<label class="form-check-label"> 
+										<input class="form-check-input" type="radio" name="trangthai" value="3" id="trangthaiEdit"> Gần hết hàng
+									</label>
+								</div>
+							</div>
+							<p id="errorGenderEdit" style="color: red"></p>
+							
+							<div class="form-group">
+							<label>Hình ảnh</label> <input type="file" class="form-control" 
+								name="image" placeholder="Enter photo" id="imageEdit">
+							</div>
+							
+							<div class="form-group">
+								<label for="birthday" class="col-form-label">Mô tả:</label> 
+								<textarea class="form-control" rows="2" name="mota" id="motaEdit"></textarea>
+							</div>
+							
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Loại sản phẩm(<label style="color: red">*</label>):</label> 
+				        		<select class="form-control" id="categoryEdit" name="category" >
+									<option th:each="item:${CATEGORIES}"
+										th:value="${item.id}" th:text="${item.categoryname}"></option>
+								</select>
+							</div>
+							<p id="errorCategoryEdit" style="color: red"></p>
+							
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Hãng sản xuất<strong>*</strong></label> 
+				        		<select class="form-control" id="hangsxEdit" name="hangsx" >
+									<option th:each="item: ${HANGSXES}"
+										th:value="${item.id}" th:text="${item.name}"></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" id="save">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirm delete</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="deleteId">Yes</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

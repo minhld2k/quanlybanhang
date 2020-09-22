@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/layout-admin}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+
+<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/role.js}"></script>
+
+<script th:src="@{/js/bootstrap-multiselect.js}"></script>
+<link rel="stylesheet" th:href="@{/css/bootstrap-multiselect.css}" />
+<style type="text/css">
+	.table > tbody > tr > td{
+		vertical-align: middle;
+	}
+</style>
+</head>
+<body>
+
+	<article layout:fragment="content-admin">
+		<div class="container">
+
+			<div class="row"
+				style="background-color: darkgrey; padding: 0; margin: 0;">
+				<div class="col-sm-6">
+					<h3 style="padding: 0; margin-top: 10px;">Danh sách vai trò</h3>
+				</div>
+				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
+					<button type="button" class="btn btn-danger deleteButton"
+						style="float: right; margin-left: 10px; margin-right: 10px;">
+						<span class="glyphicon glyphicon-trash"></span>DELETE
+					</button>
+					<button type="button" class="btn btn-primary addButton"
+						style="float: right;">
+						<span class="glyphicon glyphicon-plus"></span>Add new
+					</button>
+
+				</div>
+			</div>
+
+			<form action="/role/dataSearch" style="margin-top: 10px;">
+				<div class="row">
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Tên vai trò:</label> <input
+							type="text" placeholder="Nhập name cần tìm" name="keywords"
+							class="form-control" th:value="${session.KEYWORDVIEW}" />
+					</div>
+					<div class="col-sm-6">
+						<label for="name" class="mr-sm-2">Mã vai trò:</label> <input
+							type="text" name="keysearch" class="form-control"
+							th:value="${session.KEYSEARCH}" />
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary"
+					style="margin-top: 10px; margin-bottom: 10px; float: right;">
+					<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+				</button>
+			</form>
+
+			<th:block th:if="${null==ROLES}">
+				<h3 style="text-align: center;" th:text="${session.MESLIST}"></h3>
+			</th:block>
+			<th:block th:unless="${null==ROLES}">
+				<form th:action="@{/role/deleteAll}" method="get" id="formDelete">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th><input id="selectAll" type="checkbox"></th>
+								<th>TÊN VAI TRÒ</th>
+								<th>MÃ VAI TRÒ</th>
+								<th>EDIT</th>
+
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="item: ${ROLES}">
+								<td><input type="checkbox" name="id[]"
+									th:value="${item.id}"></td>
+								<td>
+									<a th:href="@{/role/oneRole/(id=${item.id})}" class="view"><label th:text="${item.rolename}"></label></a>
+								</td>
+								<td th:text="${item.rolekey}"></td>
+								<td><a th:href="@{/role/oneRole/(id=${item.id})}"
+									class="btn btn-warning editButton">Edit</a>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+
+				<div class="row">
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<form class="form-inline" action="/role/pagesize" method="post">
+							<input type="number" placeholder="Nhập số dòng trên trang"
+								name="pagesize" class="form-control"
+								th:value="${session.PAGESIZE}" />
+							<button type="submit" class="btn btn-primary"
+								style="margin-left: 10px;">Hiển thị</button>
+						</form>
+					</div>
+
+					<div class="col-sm-4">
+						<ul class="pagination justify-content-center">
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${1}|}">First</a>
+							</li>
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+								<a class="page-link" aria-label="Previous"
+								th:href="@{|${baseUrl}${currentIndex - 1}|}"
+								title='Go to previous page'><span aria-hidden="true">«</span>
+									<span class="sr-only">Previous</span></a>
+							</li>
+							<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+								th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+								<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+									th:text='${item}'>1</span>
+							</a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+								<a class="page-link" aria-label="Next"
+								th:href="@{|${baseUrl}${currentIndex + 1}|}"
+								title='Go to next page'><span aria-hidden="true">»</span> <span
+									class="sr-only">Next</span></a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<p style="text-align: center">
+							TỔNG SỐ RECORD : <label th:text="${session.COUNT}"></label>
+						</p>
+					</div>
+
+				</div>
+			</th:block>
+		</div>
+
+		<div id="viewcn">
+			<h4>Chức năng</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th><input id="selectAllCNADD" type="checkbox" disabled="disabled"></th>
+						<th>Tên chức năng</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="item: ${CNS}">
+						<td><input type="checkbox" name="chucnangview[]" disabled="disabled"
+							th:value="${item.id}"></td>
+						<td th:text="${item.name}"></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/role/addNew}" method="post" id="formAdd"
+				onsubmit="return formAddValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">New Role</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idAdd" name="id">
+							</div>
+							<div class="form-group">
+								<label for="rolekey" class="col-form-label">roleKey(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="rolekeyAdd" name="rolekey">
+							</div>
+							<p id="errorkeyAdd" style="color: red"
+								th:text="${session.MESKEY}"></p>
+
+							<div class="form-group">
+								<label for="rolename" class="col-form-label">roleName(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="rolenameAdd"
+									name="rolename">
+							</div>
+							<p id="errornameAdd" style="color: red"
+								th:text="${session.MESNAME}"></p>
+
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Chức năng(<label style="color: red">*</label>)</label> 
+				        		<select class="form-control" id="chucnangAdd" name="chucnang[]" multiple >
+									<option th:each="item: ${CNS}"
+										th:value="${item.id}" th:text="${item.name}"></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" id="add">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/role/save}" method="put" id="formEdit"
+				onsubmit="return formEditValidation()">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="idEdit" name="id">
+							</div>
+
+							<div class="form-group">
+								<label for="rolekey" class="col-form-label">roleKey(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="rolekeyEdit"
+									name="rolekey">
+							</div>
+							<p id="errorkeyEdit" style="color: red"
+								th:text="${session.MESKEY}"></p>
+
+							<div class="form-group">
+								<label for="rolename" class="col-form-label">roleName(<label style="color: red">*</label>):</label> <input
+									type="text" class="form-control" id="rolenameEdit"
+									name="rolename">
+							</div>
+							<p id="errornameEdit" style="color: red"
+								th:text="${session.MESNAME}"></p>
+
+							<div class="form-group">
+								<label for="name" class="mr-sm-2">Chức năng(<label style="color: red">*</label>)</label> 
+				        		<select class="form-control" id="chucnangEdit" name="chucnang[]" multiple >
+									<option th:each="item: ${CNS}"
+										th:value="${item.id}" th:text="${item.name}"></option>
+								</select>
+							</div>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" id="save">save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirm delete</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="deleteId">Yes</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>
