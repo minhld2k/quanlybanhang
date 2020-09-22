@@ -46,7 +46,6 @@ public class CategoryController {
 		if (session.getAttribute("KEYWORD") != null) {
 			return "redirect:/category/search";
 		}
-		System.out.println("111111111");
 		return "redirect:/category/list";
 	}
 
