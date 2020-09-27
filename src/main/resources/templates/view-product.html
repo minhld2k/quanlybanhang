@@ -102,14 +102,14 @@
 						<tbody>
 							<tr th:each="item: ${PRODUCTS}">
 								<td><input type="checkbox" name="id[]"
-									th:value="${item.id}" id="idAjax"></td> 
+									th:value="${item.id}"></td> 
 								<td width="100"><img alt=""
 									th:src="@{'/getimage/'+ ${item.image}}" width="80" height="70"></td>
 								<td>
 									<a th:href="@{/sanpham/oneProduct/(id=${item.id})}" class="view"><label th:text="${item.tensanpham}"></label></a>
 								</td>
-								<td><input type="number" th:value="${item.soluong}" id="soluongAjax"/></td>
-								<td><input type="text" th:value="${item.giatien}" id="giatienAjax"/></td>
+								<td><input type="number" th:value="${item.soluong}" th:id="soluong+${item.id}" th:onchange="|updateAjax(${item.id})|" /></td>
+								<td><input type="text" th:value="${item.giatien}" th:id="giatien+${item.id}" th:onchange="|updateAjax(${item.id})|" /></td>
 								<td th:text="${item.category.categoryname}"></td>
 								<td th:text="${item.hangsx.name}"></td>
 								<th:block th:if="${item.trangthai == 1}">

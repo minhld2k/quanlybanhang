@@ -228,7 +228,6 @@ public class ProductController {
 			@RequestParam("giatienAjax")Double giatien,HttpSession session) {
 		Product product = this.productService.findById(id);
 		String ajaxResponse = "";
-		
 		try {
 			if (product != null) {
 				if (soluong != null) {
