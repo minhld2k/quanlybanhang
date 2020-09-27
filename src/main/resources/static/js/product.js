@@ -12,6 +12,52 @@ $(document).ready(function() {
 		}
 	});
 	
+	$("#soluongAjax").change(function(event){
+		event.preventDefault();
+		var id = $("#idAjax").val();
+		var soluong = $("#soluongAjax").val();
+		var giatien = $("#giatienAjax").val();
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/sanpham/updateAjax",
+			data : {
+				idAjax : id,
+				soluongAjax : soluong,
+				giatienAjax : giatien
+			},
+			dataType : "json",
+			timeout : 10000,
+			success : function(data) {
+				alert(data);
+			},
+
+		});
+	});
+	
+	$("#giatienAjax").change(function(event){
+		event.preventDefault();
+		var id = $("#idAjax").val();
+		var soluong = $("#soluongAjax").val();
+		var giatien = $("#giatienAjax").val();
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/sanpham/updateAjax",
+			data : {
+				idAjax : id,
+				soluongAjax : soluong,
+				giatienAjax : giatien
+			},
+			dataType : "json",
+			timeout : 10000,
+			success : function(data) {
+				alert(data);
+			},
+
+		});
+	});
+	
 	$('.addButton').on('click',function(event){
 		event.preventDefault();
 		var url = $('#formAdd').attr('action');
@@ -53,8 +99,6 @@ $(document).ready(function() {
 			success : function(data) {
 				$('#idEdit').val(data.id);
 				$('#tensanphamEdit').val(data.tensanpham);
-				$('#soluongEdit').val(data.soluong);
-				$('#giatienEdit').val(data.giatien);
 				$('#ramEdit').val(data.ram);
 				$('#manhinhEdit').val(data.manhinh);
 				$('input:radio[value="'+data.trangthai+'"]').prop('checked',true);

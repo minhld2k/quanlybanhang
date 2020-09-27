@@ -43,6 +43,8 @@ import com.DuAnJV.services.CategoryService;
 import com.DuAnJV.services.HangsxService;
 import com.DuAnJV.services.ProductService;
 import com.DuAnJV.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping(value="/sanpham")
@@ -156,8 +158,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/save", method = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET })
 	public String update(@RequestParam("id")Long id,ModelMap model,HttpSession session,
-			@RequestParam("tensanpham")String tensanpham,@RequestParam("soluong")Integer soluong,
-			@RequestParam("giatien")Double giatien,@RequestParam("ram")String ram,
+			@RequestParam("tensanpham")String tensanpham,@RequestParam("ram")String ram,
 			@RequestParam("manhinh")String manhinh,@RequestParam("trangthai")Integer trangthai,
 			@RequestParam(name="image",required = false)MultipartFile image,@RequestParam("mota")String mota,
 			@RequestParam("category")Long categoryid,@RequestParam("hangsx")Long hangsxid) {
@@ -177,7 +178,7 @@ public class ProductController {
 				e.printStackTrace();
 			}
 		}
-		Product product1 = new Product(id, tensanpham,soluong, giatien,ram
+		Product product1 = new Product(id, tensanpham,product.getSoluong(), product.getGiatien(),ram
 				,manhinh, trangthai,imageDefault, mota);
 		product1.setIsdelete((byte) 0);
 		product1.setUpdateby((String) session.getAttribute("USERNAME"));
@@ -219,6 +220,34 @@ public class ProductController {
 		map.put("categoryid", product.getCategory().getId().toString());
 		map.put("hangsxid", product.getHangsx().getId().toString());
 		return map;
+	}
+	
+	@RequestMapping(value = "/updateAjax", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public String updateAjax(@RequestParam("idAjax")Long id,@RequestParam("soluongAjax")Integer soluong,
+			@RequestParam("giatienAjax")Double giatien,HttpSession session) {
+		Product product = this.productService.findById(id);
+		String ajaxResponse = "";
+		
+		try {
+			if (product != null) {
+				if (soluong != null) {
+					product.setSoluong(soluong);
+				}
+				if (giatien != null) {
+					product.setGiatien(giatien);
+				}
+				product.setUpdateby((String) session.getAttribute("USERNAME"));
+				product.setUpdateday(new Timestamp(new Date().getTime()));
+				this.productService.update(product);
+				ajaxResponse = "Cập nhật thành công";
+			} else {
+				ajaxResponse = "Cập nhật thất bại";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ajaxResponse;
 	}
 	
 	@RequestMapping(value = "/deleteAll", method = { RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.GET })

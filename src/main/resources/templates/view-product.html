@@ -102,14 +102,14 @@
 						<tbody>
 							<tr th:each="item: ${PRODUCTS}">
 								<td><input type="checkbox" name="id[]"
-									th:value="${item.id}"></td> 
+									th:value="${item.id}" id="idAjax"></td> 
 								<td width="100"><img alt=""
 									th:src="@{'/getimage/'+ ${item.image}}" width="80" height="70"></td>
 								<td>
 									<a th:href="@{/sanpham/oneProduct/(id=${item.id})}" class="view"><label th:text="${item.tensanpham}"></label></a>
 								</td>
-								<td th:text="${item.soluong}"></td>
-								<td th:text="${item.giatien}"></td>
+								<td><input type="number" th:value="${item.soluong}" id="soluongAjax"/></td>
+								<td><input type="text" th:value="${item.giatien}" id="giatienAjax"/></td>
 								<td th:text="${item.category.categoryname}"></td>
 								<td th:text="${item.hangsx.name}"></td>
 								<th:block th:if="${item.trangthai == 1}">
@@ -308,18 +308,6 @@
 							</div>
 							<p id="errorTensanphamEdit" style="color: red"></p>
 
-							<div class="form-group">
-								<label for="fullname" class="col-form-label">Số lượng<strong>*</strong>:</label> <input
-									type="number" class="form-control" id="soluongEdit" name="soluong">
-							</div>
-							<p id="errorSoluongEdit" style="color: red"></p>
-							
-							<div class="form-group">
-								<label for="phone" class="col-form-label">Giá tiền<strong>*</strong>:</label> <input
-									type="text" class="form-control" id="giatienEdit" name="giatien">
-							</div>
-							<p id="errorGiatienEdit" style="color: red"></p>
-							
 							<div class="form-group">
 								<label for="birthday" class="col-form-label">Ram:</label> <input
 									type="text" class="form-control" id="ramEdit" name="ram">
