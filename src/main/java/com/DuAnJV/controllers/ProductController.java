@@ -79,6 +79,7 @@ public class ProductController {
 			HttpSession session, HttpServletRequest request) {
 		String username = (String) session.getAttribute("USERNAME");
 		String url = request.getServletPath();
+		
 		User user = this.userService.findUserByEmail(username);
 		if (null == username || "".equals(username)) {
 			return "redirect:/loginadmin";

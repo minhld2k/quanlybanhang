@@ -16,4 +16,8 @@ public interface ProductService {
 
 	void add(Product product);
 
+	List<Object[]> findAllProduct(String tensanpham, List<Long> category, List<Long> hangsx, List<Integer> trangthai, int limit, int offset);
+
+	long countAllProduct(String tensanpham, List<Long> category, List<Long> hangsx, List<Integer> trangthai);
+
 }
