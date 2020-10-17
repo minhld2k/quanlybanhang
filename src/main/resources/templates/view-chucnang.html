@@ -90,7 +90,6 @@
 								<th>Tên chức năng</th>
 								<th>URL</th>
 								<th>Mã chức năng</th>
-								<th>EDIT</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -98,11 +97,12 @@
 							<tr th:each="item: ${CHUCNANGS}">
 								<td><input type="checkbox" name="id[]"
 									th:value="${item.id}"></td>
-								<td th:text="${item.name}"></td>
+								<td>
+									<a th:href="@{/chucnang/oneChucnang/(id=${item.id})}" class="editButton">
+									<label class="linkEdit" th:text="${item.name}"></label></a>
+								</td>
 								<td th:text="${item.url}"></td>
 								<td th:text="${item.key}"></td>
-								<td><a th:href="@{/chucnang/oneChucnang/(id=${item.id})}"
-									class="btn btn-warning editButton">Edit</a>
 							</tr>
 
 						</tbody>

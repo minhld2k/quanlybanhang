@@ -15,25 +15,7 @@ $(document).ready(function(){
 	$('.addButton').on('click',function(event){
 		event.preventDefault();
 		var url = $('#formAdd').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#addModal').modal('hide');
-				}else{
-					$('#addModal').modal('show');
-				}
-			},
-
-		});
+		checkQuyen(url,'addModal');
 	});
 	
 	$('.table .editButton').on('click', function(event) {
@@ -46,49 +28,13 @@ $(document).ready(function(){
 			$('#nameEdit').val(category.categoryname);
 		});
 		var url = $('#formEdit').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#editModal').modal('hide');
-				}else{
-					$('#editModal').modal('show');
-				}
-			},
-
-		});
+		checkQuyen(url,'editModal');
 	});
 	
 	$('.deleteButton').on('click',function(event){
 		event.preventDefault();
 		var url = $('#formDelete').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#deleteModal').modal('hide');
-				}else{
-					$('#deleteModal').modal('show');
-				}
-			},
-
-		});
+		checkQuyen(url,'deleteModal');
 		$("#deleteId").click(function() {
 			$("#formDelete").submit();
 		});

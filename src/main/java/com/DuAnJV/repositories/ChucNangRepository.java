@@ -38,16 +38,16 @@ public interface ChucNangRepository extends JpaRepository<Chucnang, Long> {
 			+ "and isdelete = 0 order by id",nativeQuery = true)
 	List<Chucnang> findAllChucnangcha();
 	
-	@Query(value = "WITH RECURSIVE tree(id,name,chucnangchaid,url,key,isdelete,creatby,creatday,updateby,updateday,path,depth) AS \r\n" + 
-			"(\r\n" + 
-			"  	SELECT id,name,chucnangchaid,url,key,isdelete,creatby,creatday,updateby,updateday,array[id] as path, 1 as depth\r\n" + 
-			"  	FROM qtht_chucnangs WHERE chucnangchaid < 0\r\n" + 
-			"  	UNION ALL\r\n" + 
-			"  	SELECT cn.id,cn.name,cn.chucnangchaid,cn.url,cn.key,cn.isdelete,cn.creatby,cn.creatday,cn.updateby,cn.updateday,tree.path || cn.id,tree.depth + 1 as depth\r\n" + 
-			"  	FROM qtht_chucnangs cn INNER JOIN tree ON cn.chucnangchaid = tree.id\r\n" + 
-			")\r\n" + 
-			"SELECT id,CASE WHEN chucnangchaid > 0 THEN concat('--- ',name) ELSE name END,key,url,chucnangchaid,isdelete,creatby,creatday,updateby,updateday\r\n" + 
-			"FROM tree where isdelete = 0 order by path limit ?1 offset ?2", nativeQuery = true)
+	@Query(value = " WITH RECURSIVE tree(id,name,chucnangchaid,url,key,isdelete,creatby,creatday,updateby,updateday,path,depth) AS " + 
+			" ( " + 
+			"  	SELECT id,name,chucnangchaid,url,key,isdelete,creatby,creatday,updateby,updateday,array[id] as path, 1 as depth " + 
+			"  	FROM qtht_chucnangs WHERE chucnangchaid < 0 " + 
+			"  	UNION ALL " + 
+			"  	SELECT cn.id,cn.name,cn.chucnangchaid,cn.url,cn.key,cn.isdelete,cn.creatby,cn.creatday,cn.updateby,cn.updateday,tree.path || cn.id,tree.depth + 1 as depth " + 
+			"  	FROM qtht_chucnangs cn INNER JOIN tree ON cn.chucnangchaid = tree.id " + 
+			" ) " + 
+			" SELECT id,CASE WHEN chucnangchaid > 0 THEN concat('--- ',name) ELSE name END,key,url,chucnangchaid,isdelete,creatby,creatday,updateby,updateday " + 
+			" FROM tree where isdelete = 0 order by path limit ?1 offset ?2", nativeQuery = true)
 	List<Chucnang> findAll(Integer pagesize, Integer offset);
 	
 	@Query(value = "select count(*) from qtht_chucnangs where not chucnangchaid is null and isdelete = 0",nativeQuery = true)

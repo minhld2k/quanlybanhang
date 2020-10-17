@@ -71,7 +71,6 @@
 								<th><input id="selectAll" type="checkbox"></th>
 								<th>TÊN VAI TRÒ</th>
 								<th>MÃ VAI TRÒ</th>
-								<th>EDIT</th>
 
 							</tr>
 						</thead>
@@ -81,11 +80,10 @@
 								<td><input type="checkbox" name="id[]"
 									th:value="${item.id}"></td>
 								<td>
-									<a th:href="@{/role/oneRole/(id=${item.id})}" class="view"><label th:text="${item.rolename}"></label></a>
+									<a th:href="@{/role/oneRole/(id=${item.id})}" class="editButton">
+									<label class="linkEdit" th:text="${item.rolename}"></label></a>
 								</td>
 								<td th:text="${item.rolekey}"></td>
-								<td><a th:href="@{/role/oneRole/(id=${item.id})}"
-									class="btn btn-warning editButton">Edit</a>
 							</tr>
 
 						</tbody>
@@ -144,27 +142,6 @@
 
 				</div>
 			</th:block>
-		</div>
-
-		<div id="viewcn">
-			<h4>Chức năng</h4>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th><input id="selectAllCNADD" type="checkbox" disabled="disabled"></th>
-						<th>Tên chức năng</th>
-					</tr>
-				</thead>
-				<tbody>
-
-					<tr th:each="item: ${CNS}">
-						<td><input type="checkbox" name="chucnangview[]" disabled="disabled"
-							th:value="${item.id}"></td>
-						<td th:text="${item.name}"></td>
-					</tr>
-
-				</tbody>
-			</table>
 		</div>
 
 		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"

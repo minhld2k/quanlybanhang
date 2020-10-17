@@ -39,6 +39,7 @@
 					</button>
 				</div>
 			</div>
+			
 			<button class="btn btn-primary viewFind" >Hiển thị tìm kiếm</button>
 			<div class="viewForm">
 				<form action="/user/dataSearch" style="margin-top: 10px;" id="formFind">
@@ -169,27 +170,6 @@
 
 				</div>
 			</th:block>
-		</div>
-		
-		<div id="viewcn">
-			<h4>Chức năng</h4>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th><input id="selectAllCNADD" type="checkbox" disabled="disabled"></th>
-						<th>Tên chức năng</th>
-					</tr>
-				</thead>
-				<tbody>
-
-					<tr th:each="item: ${CNS}">
-						<td><input type="checkbox" name="chucnangview[]" disabled="disabled"
-							th:value="${item.id}"></td>
-						<td th:text="${item.name}"></td>
-					</tr>
-
-				</tbody>
-			</table>
 		</div>
 		
 		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"

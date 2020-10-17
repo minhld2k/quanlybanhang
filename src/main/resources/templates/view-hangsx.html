@@ -68,7 +68,6 @@
 								<th><input id="selectAll" type="checkbox"></th>
 								<th>NAME</th>
 								<th>KEY</th>
-								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -76,10 +75,11 @@
 							<tr th:each="item: ${HANGSXS}">
 								<td><input type="checkbox" name="id[]"
 									th:value="${item.id}"></td>
-								<td th:text="${item.name}"></td>
+								<td>
+									<a th:href="@{/hangsx/oneHangsx/(id=${item.id})}" class="editButton">
+									<label class="linkEdit" th:text="${item.name}"></label></a>
+								</td>
 								<td th:text="${item.key}"></td>
-								<td><a th:href="@{/hangsx/oneHangsx/(id=${item.id})}"
-									class="btn btn-warning editButton">Edit</a>
 							</tr>
 
 						</tbody>

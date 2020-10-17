@@ -41,6 +41,7 @@ public class ChucnangController {
 	@RequestMapping("/list")
 	public String listRole(ModelMap model, @RequestParam(name = "page", required = false) Integer pageNumber,
 			HttpSession session, HttpServletRequest request) {
+		System.out.println("listRole: "+chucnangService.findAllChucnang(10, 0).get(0));
 		String username = (String) session.getAttribute("USERNAME");
 		String url = request.getServletPath();
 		User user = this.userService.findUserByEmail(username);
@@ -54,10 +55,10 @@ public class ChucnangController {
 					pageNumber = 1;
 				}
 				if (null == session.getAttribute("PAGESIZE") || session.getAttribute("PAGESIZE").equals("")) {
-					session.setAttribute("PAGESIZE", 5);
+					session.setAttribute("PAGESIZE", 10);
 				}
 				long count = this.chucnangService.count();
-				session.setAttribute("COUNT", count);
+				
 				if (0 == count) {
 					session.setAttribute("MESLIST", "Không có Chức năng");
 				} else {
@@ -77,6 +78,7 @@ public class ChucnangController {
 							this.chucnangService.findAllChucnang(pageSize, (pageNumber - 1) * pageSize));
 
 				}
+				session.setAttribute("COUNT", count);
 				session.setAttribute("KEYWORDVIEW", "");
 				session.setAttribute("KEYSEARCH", "");
 				return "view-chucnang";
@@ -238,7 +240,7 @@ public class ChucnangController {
 	@RequestMapping("/pagesize")
 	public String size(@RequestParam(name = "pagesize") int pagesize, HttpSession session) {
 		if (0 == pagesize) {
-			session.setAttribute("PAGESIZE", 5);
+			session.setAttribute("PAGESIZE", 10);
 		} else {
 			session.setAttribute("PAGESIZE", pagesize);
 		}

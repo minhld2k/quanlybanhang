@@ -40,45 +40,48 @@
 				</div>
 			</div>
 			
-			<form action="/sanpham/dataSearch" style="margin-top: 10px;" id="formFind">
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Tên sản phẩm:</label> <input
-							type="text" placeholder="Nhập name cần tìm" name="namefind"
-							class="form-control" th:value="${session.NAMEFIND}" />
+			<button class="btn btn-primary viewFind" >Hiển thị tìm kiếm</button>
+			<div class="viewForm">
+				<form action="/sanpham/dataSearch" style="margin-top: 10px;" id="formFind">
+					<div class="row">
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Tên sản phẩm:</label> <input
+								type="text" placeholder="Nhập name cần tìm" name="namefind"
+								class="form-control" th:value="${session.NAMEFIND}" />
+						</div>
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Loại sản phẩm:</label> 
+					        <select class="form-control" id="categoryfind" name="categoryfind" multiple>
+										<option th:each="item:${CATEGORIES}"
+											th:value="${item.id}" th:text="${item.categoryname}"></option>
+							</select>
+						</div>
 					</div>
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Loại sản phẩm:</label> 
-				        <select class="form-control" id="categoryfind" name="categoryfind" multiple>
-									<option th:each="item:${CATEGORIES}"
-										th:value="${item.id}" th:text="${item.categoryname}"></option>
-						</select>
+					
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Hãng Sản xuất:</label> 
+					        <select class="form-control" id="hangsxfind" name="hangsxfind" multiple>
+										<option th:each="item: ${HANGSXES}"
+											th:value="${item.id}" th:text="${item.name}"></option>
+							</select>
+						</div>
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Trạng thái:</label> 
+					        <select class="form-control" name="trangthaifind" id="trangthaifind" multiple >
+								<option value="1">Còn hàng</option>
+								<option value="2">Hết hàng</option>
+								<option value="3">Gần hết hàng</option>
+							</select>
+						</div>
 					</div>
-				</div>
-				
-				<div class="row" style="margin-top: 10px;">
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Hãng Sản xuất:</label> 
-				        <select class="form-control" id="hangsxfind" name="hangsxfind" multiple>
-									<option th:each="item: ${HANGSXES}"
-										th:value="${item.id}" th:text="${item.name}"></option>
-						</select>
-					</div>
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Trạng thái:</label> 
-				        <select class="form-control" name="trangthaifind" id="trangthaifind" multiple >
-							<option value="1">Còn hàng</option>
-							<option value="2">Hết hàng</option>
-							<option value="3">Gần hết hàng</option>
-						</select>
-					</div>
-				</div>
-				
-				<button type="submit" class="btn btn-primary"
-					style="margin-top: 10px; margin-bottom: 10px; float: right;">
-					<span class="glyphicon glyphicon-search"></span> Tìm kiếm
-				</button>
-			</form>
+					
+					<button type="submit" class="btn btn-primary"
+						style="margin-top: 10px; margin-bottom: 10px; float: right;">
+						<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+					</button>
+				</form>
+			</div>
 			
 			<th:block th:if="${null == PRODUCTS}">
 				<h3 style="text-align: center;" th:text="${session.MESLIST}"></h3>
@@ -96,7 +99,6 @@
 								<th>Danh mục</th>
 								<th>Hãng sản xuất</th>
 								<th>Trạng thái</th>
-								<th>EDIT</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -106,7 +108,8 @@
 								<td width="100"><img alt=""
 									th:src="@{'/getimage/'+ ${item[1].toString()}}" width="80" height="70"></td>
 								<td>
-									<a th:href="@{/sanpham/oneProduct/(id=${item[0].toString()})}" class="view"><label th:text="${item[2].toString()}"></label></a>
+									<a th:href="@{/sanpham/oneProduct/(id=${item[0].toString()})}" class="editButton">
+									<label class="linkEdit" th:text="${item[2].toString()}"></label></a>
 								</td>
 								<td><input type="number" th:value="${item[3].toString()}" th:id="soluong+${item[0].toString()}"
 										th:onchange="|updateAjax(${item[0]})|" /></td>
@@ -123,9 +126,6 @@
 								<th:block th:if="${item[7].toString() == '3'}">
 									<td>Gần hết hàng</td>
 								</th:block> 
-								
-								<td><a th:href="@{/user/oneUser/(id=${item[0].toString()})}"
-									class="btn btn-warning editButton">Edit</a>
 							</tr>
 
 						</tbody>
@@ -293,7 +293,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Update product</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>

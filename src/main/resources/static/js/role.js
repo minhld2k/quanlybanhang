@@ -4,36 +4,6 @@
 
 $(document).ready(function() {
 	
-	$("#viewcn").hide();
-	
-	$('.view').on('click', function(event) {
-		event.preventDefault();
-		$('input[name="chucnangview[]"]').prop("checked", false);
-		var href = $(this).attr('href');
-		var id = GetURLParameter(href,'id');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/role/oneRole",
-			data : {
-				id : id
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				var temp = getData(data.chucnang);
-				if (temp != null) {
-					$('input[name="chucnangview[]"]').val(temp);
-				}
-			},
-		});
-		if ($("#viewcn").is(":hidden")) {
-			$("#viewcn").show();
-		}else{
-			$("#viewcn").hide();
-		}
-	});
-	
 	$("#selectAll").click(function() {
 		$('input[name="id[]"]').prop("checked", $(this).prop("checked"));
 	});
@@ -62,25 +32,8 @@ $(document).ready(function() {
 	$('.addButton').on('click',function(event){
 		event.preventDefault();
 		var url = $('#formAdd').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#addModal').modal('hide');
-				}else{
-					$('#addModal').modal('show');
-				}
-			},
-
-		});
+		
+		checkQuyen(url,'addModal');
 	});
 
 	$('.table .editButton').on('click', function(event) {
@@ -109,25 +62,8 @@ $(document).ready(function() {
 			},
 		});
 		var url = $('#formEdit').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#editModal').modal('hide');
-				}else{
-					$('#editModal').modal('show');
-				}
-			},
-
-		});
+		
+		checkQuyen(url,'editModal');
 	});
 
 	$("#formAdd").submit(function(event) {
@@ -186,25 +122,8 @@ $(document).ready(function() {
 	$('.deleteButton').on('click',function(event){
 		event.preventDefault();
 		var url = $('#formDelete').attr('action');
-		$.ajax({
-			type : "GET",
-			contentType : "application/json",
-			url : "/check",
-			data : {
-				url : url
-			},
-			dataType : "json",
-			timeout : 10000,
-			success : function(data) {
-				if (data < 0) {
-					alert("ACCESS DENID");
-					$('#deleteModal').modal('hide');
-				}else{
-					$('#deleteModal').modal('show');
-				}
-			},
-
-		});
+	
+		checkQuyen(url,'deleteModal');
 		$("#deleteId").click(function() {
 			$("#formDelete").submit();
 		});
