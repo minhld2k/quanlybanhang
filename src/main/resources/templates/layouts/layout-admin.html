@@ -9,6 +9,7 @@
 <script th:src="@{/js/jquery.min.js}"></script>
 <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 <script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 
 </head>
 <body>
@@ -19,24 +20,34 @@
 		</header>
 		<nav class="row">
 			<div class="navbar navbar-inverse">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse"
-						data-target=".navbar-collapse">
-						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-				</div>
+
 				<div class="navbar-collapse collapse">
 					<!--Menu-->
 					<ul class="nav navbar-nav">
-						<li class="dropdown"  th:each="item: ${session.MENU}">
-							<th:block th:if="${item.chucnangcha.id < 0}">
-								<a th:href="${item.url}" th:text="${item.name}"></a>
-							</th:block>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hệ thống</a>
+							<ul class="dropdown-menu">
+								<li th:each="item: ${session.MENU}">
+									<th:block th:if="${item.chucnangcha.id < 0}">
+										<a th:href="${item.url}" th:text="${item.name}"></a>
+									</th:block>
+								</li>
+							</ul>
 						</li>
 					</ul>
+
+
 					<ul class="nav navbar-nav navbar-right">
-						<li><a th:href="@{/logout}">Đăng xuất</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Trang cá nhân</a>
+							<ul class="dropdown-menu">
+								<li><a href="">Trang cá nhân</a></li>
+								<li><a href="">Đổi mật khẩu</a></li>
+								<li class="divider"></li>
+								<li><a th:href="@{/logout}">Đăng xuất</a></li>
+							</ul>
+						</li>
+						
 					</ul>
 					<!--Menu-->
 				</div>
@@ -44,9 +55,7 @@
 		</nav>
 		<div class="row">
 
-			<article layout:fragment="content-admin">
-				
-			</article>
+			<article layout:fragment="content-admin"></article>
 
 		</div>
 

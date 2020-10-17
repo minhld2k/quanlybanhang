@@ -47,8 +47,10 @@ public class LoginController {
 		if (this.userservice.checkLogin(username, password)) {
 			System.out.println("login thanh cong");
 			List<Chucnang> ls = this.chucnangService.findAllChucnangByEmail(username);
+			User user = this.userservice.findUserByEmail(username);
 			session.setAttribute("MENU", ls);
 			session.setAttribute("USERNAME", username);
+			session.setAttribute("USERLOGIN", user);
 			return "redirect:/user/list";
 		} else {
 			{

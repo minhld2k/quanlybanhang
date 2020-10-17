@@ -39,42 +39,44 @@
 					</button>
 				</div>
 			</div>
-			
-			<form action="/user/dataSearch" style="margin-top: 10px;" id="formFind">
-				<div class="row">
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Họ và tên:</label> <input
-							type="text" placeholder="Nhập name cần tìm" name="namefind"
-							class="form-control" th:value="${session.NAMEFIND}" />
+			<button class="btn btn-primary viewFind" >Hiển thị tìm kiếm</button>
+			<div class="viewForm">
+				<form action="/user/dataSearch" style="margin-top: 10px;" id="formFind">
+					<div class="row">
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Họ và tên:</label> <input
+								type="text" placeholder="Nhập name cần tìm" name="namefind"
+								class="form-control" th:value="${session.NAMEFIND}" />
+						</div>
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Email:</label> <input
+								type="text" name="emailfind" class="form-control" placeholder="Nhập email cần tìm"
+								th:value="${session.EMAILFIND}" />
+						</div>
 					</div>
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Email:</label> <input
-							type="text" name="emailfind" class="form-control" placeholder="Nhập email cần tìm"
-							th:value="${session.EMAILFIND}" />
+					
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Địa chỉ:</label> <input
+								type="text" placeholder="Nhập Địa chỉ cần tìm" name="addressfind"
+								class="form-control" th:value="${session.ADDRESSFIND}" />
+						</div>
+						<div class="col-sm-6">
+							<label for="name" class="mr-sm-2">Giới tính:</label> 
+					        <select class="form-control" name="genderfind" id="genderfind" multiple >
+								<option value="1">Nam</option>
+								<option value="2">Nữ</option>
+								<option value="3">Không xác định</option>
+							</select>
+						</div>
 					</div>
-				</div>
-				
-				<div class="row" style="margin-top: 10px;">
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Địa chỉ:</label> <input
-							type="text" placeholder="Nhập Địa chỉ cần tìm" name="addressfind"
-							class="form-control" th:value="${session.ADDRESSFIND}" />
-					</div>
-					<div class="col-sm-6">
-						<label for="name" class="mr-sm-2">Giới tính:</label> 
-				        <select class="form-control" name="genderfind" id="genderfind" multiple >
-							<option value="1">Nam</option>
-							<option value="2">Nữ</option>
-							<option value="3">Không xác định</option>
-						</select>
-					</div>
-				</div>
-				
-				<button type="submit" class="btn btn-primary"
-					style="margin-top: 10px; margin-bottom: 10px; float: right;">
-					<span class="glyphicon glyphicon-search"></span> Tìm kiếm
-				</button>
-			</form>
+					
+					<button type="submit" class="btn btn-primary"
+						style="margin-top: 10px; margin-bottom: 10px; float: right;">
+						<span class="glyphicon glyphicon-search"></span> Tìm kiếm
+					</button>
+				</form>
+			</div>
 			
 			<th:block th:if="${null == USERS}">
 				<h3 style="text-align: center;" th:text="${session.MESLIST}"></h3>
@@ -91,7 +93,6 @@
 								<th>Số điện thoại</th>
 								<th>Giới tính</th>
 								<th>Địa chỉ</th>
-								<th>EDIT</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -99,7 +100,8 @@
 								<td><input type="checkbox" name="id[]"
 									th:value="${item.id}"></td>
 								<td>
-									<a th:href="@{/user/oneUserCNS/(id=${item.id})}" class="view"><label th:text="${item.email}"></label></a>
+									<a th:href="@{/user/oneUser/(id=${item.id})}" class="editButton">
+									<label class="linkEdit" th:text="${item.email}"></label></a>
 								</td>
 								<td th:text="${item.fullname}"></td>
 								<td th:text="${item.birthday}"></td>
@@ -110,8 +112,6 @@
 									<span th:unless="${item.gender == 2 || item.gender == 1}">Không xác định</span>
 								</td>
 								<td th:text="${item.address}"></td>
-								<td><a th:href="@{/user/oneUser/(id=${item.id})}"
-									class="btn btn-warning editButton">Edit</a>
 							</tr>
 
 						</tbody>
