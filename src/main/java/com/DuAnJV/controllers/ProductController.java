@@ -79,8 +79,8 @@ public class ProductController {
 			HttpSession session, HttpServletRequest request) {
 		String username = (String) session.getAttribute("USERNAME");
 		String url = request.getServletPath();
-		
 		User user = this.userService.findUserByEmail(username);
+		
 		if (null == username || "".equals(username)) {
 			return "redirect:/loginadmin";
 		} else {
@@ -93,7 +93,7 @@ public class ProductController {
 				if (null == session.getAttribute("PAGESIZE") || session.getAttribute("PAGESIZE").equals("")) {
 					session.setAttribute("PAGESIZE", 10);
 				}
-				long count = this.productService.countAll();
+				long count = this.productService.countAllProduct("", null, null, null);
 				session.setAttribute("COUNT", count);
 				if (0 == count) {
 					session.setAttribute("MESLIST", "Không có sản phẩm");
@@ -110,14 +110,66 @@ public class ProductController {
 					model.addAttribute("currentIndex", pageNumber);
 					model.addAttribute("totalPageCount", end);
 					model.addAttribute("baseUrl", "/sanpham/list?page=");
-					model.addAttribute("PRODUCTS", this.productService.findAll(pageSize, (pageNumber - 1) * pageSize));
+					model.addAttribute("PRODUCTS", this.productService.findAllProduct("", null, null, null, pageSize, (pageNumber - 1) * pageSize));
 				}
-				session.setAttribute("EMAILFIND", "");
-				session.setAttribute("ADDRESSFIND", "");
-				session.setAttribute("NAMEFIND", "");
 				return "view-product";
 			}
 		}
+	}
+	
+	@RequestMapping("/dataSearch")
+	public String search(HttpSession session, @RequestParam("namefind") String tenSanPham,
+			@RequestParam(name = "categoryfind", required = false) List<Long> category,
+			@RequestParam(name = "hangsxfind", required = false) List<Long> hangsx,
+			@RequestParam(name = "trangthaifind", required = false) List<Integer> trangThai) {
+		session.setAttribute("NAMEFIND", tenSanPham);
+		if (null == category && null == hangsx && null == trangThai && tenSanPham.isEmpty()) {
+			return "redirect:/sanpham/list";
+		}else {
+			if (!tenSanPham.isEmpty()) {
+				tenSanPham = replaceDemo.replace(tenSanPham);
+				session.setAttribute("KEYWORD", tenSanPham);
+			}else {
+				session.setAttribute("KEYWORD", tenSanPham);
+			}
+			session.setAttribute("CATEGORY", category);
+			session.setAttribute("HANGSX", hangsx);
+			session.setAttribute("TRANGTHAI", trangThai);
+			return "redirect:/sanpham/search";
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/search")
+	public String searchCategory(ModelMap model, @RequestParam(name = "page", required = false) Integer pageNumber
+			, HttpSession session) {
+		if (null == pageNumber || pageNumber < 1) {
+			pageNumber = 1;
+		}
+		int pageSize = (Integer) session.getAttribute("PAGESIZE");
+		String tenSanPham = (String) session.getAttribute("KEYWORD");
+		List<Long> lsCategory = (List<Long>) session.getAttribute("CATEGORY");
+		List<Long> lsHangsx = (List<Long>) session.getAttribute("HANGSX");
+		List<Integer> lsTrangThai = (List<Integer>) session.getAttribute("TRANGTHAI");
+		long count = this.productService.countAllProduct(tenSanPham, lsCategory, lsHangsx, lsTrangThai);
+		List<Object[]> ls = this.productService.findAllProduct(tenSanPham, lsCategory, lsHangsx, lsTrangThai, pageSize, (pageNumber - 1) * pageSize);
+		if (0 == count) {
+			session.setAttribute("MESLIST", "Không tìm thấy sản phẩm yêu cầu");
+		} else {
+			long end = 0;
+			if (0 == count % pageSize) {
+				end = count / pageSize;
+			} else {
+				end = count / pageSize + 1;
+			}
+			model.addAttribute("beginIndex", 1);
+			model.addAttribute("endIndex", end);
+			model.addAttribute("currentIndex", pageNumber);
+			model.addAttribute("totalPageCount", end);
+			model.addAttribute("baseUrl", "/sanpham/search?page=");
+			model.addAttribute("PRODUCTS", ls);
+		}
+		return "view-product";
 	}
 	
 	@RequestMapping(value = "/addNew", method = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET })
@@ -229,6 +281,7 @@ public class ProductController {
 			@RequestParam("giatienAjax")Double giatien,HttpSession session) {
 		Product product = this.productService.findById(id);
 		String ajaxResponse = "";
+		
 		try {
 			if (product != null) {
 				if (soluong != null) {

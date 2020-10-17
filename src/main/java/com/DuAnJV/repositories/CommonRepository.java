@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.DuAnJV.common.replaceDemo;
+
 
 
 @Repository
@@ -20,37 +22,36 @@ public class CommonRepository {
 		List<Object[]> lsProduct = new ArrayList<>();
 		StringBuilder str = new StringBuilder();
 		str.append(" SELECT ")
-		   .append("	id, image, tensanpham, soluong, giatien, categoryid, hangsxid, trangthai ")
-		   .append(" FROM qlsp_products ");
-		   
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien, ")
+		   .append("	pro.categoryid, pro.hangsxid, pro.trangthai,hsx.name,cate.categoryname	")
+		   .append(" FROM qlsp_products pro ")
+		   .append("	LEFT JOIN qtht_hangsx hsx on pro.hangsxid = hsx.id ")
+		   .append("	LEFT JOIN qtht_categories cate on cate.id = pro.categoryid ")
+		   .append(" WHERE pro.isdelete = 0 ");
 		if (!tensanpham.isEmpty()) {
-			str.append(" , to_tsquery('"+tensanpham+"') query ")
-			   .append(" WHERE query @@ fulltext_ AND isdelete = 0 ");
-		}else {
-			str.append(" WHERE isdelete = 0 ");
+			str.append(" AND to_tsquery('"+tensanpham+"') @@ pro.fulltext_ ");
 		}
 		
 		if (category != null) {
-			str.append(" 	AND categoryid IN ("+category+") ");
+			str.append(" 	AND pro.categoryid IN ("+replaceDemo.convertFromListLongToString(category)+") ");
 		}
 		if (hangsx != null) {
-			str.append(" 	AND hangsxid IN ("+hangsx+") ");
+			str.append(" 	AND pro.hangsxid IN ("+replaceDemo.convertFromListLongToString(hangsx)+") ");
 		}
 		if (trangthai != null) {
-			str.append(" 	AND trangthai IN ("+trangthai+") ");
+			str.append(" 	AND pro.trangthai IN ("+replaceDemo.convertFromListIntToString(trangthai)+") ");
 		}
 		if (!tensanpham.isEmpty()) {
-			str.append(" ORDER BY ts_rank_cd(fulltext_, query)desc ");
+			str.append(" ORDER BY ts_rank_cd(pro.fulltext_, to_tsquery('"+tensanpham+"'))desc ");
 		}else {
-			str.append(" ORDER BY creatday desc ");
+			str.append(" ORDER BY pro.creatday desc ");
 		}
 		str.append(" LIMIT "+limit+" OFFSET "+offset);
 		
-		System.out.println("=> "+str.toString());
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
 		for (Map<String, Object> map : rows) {
-			Object[] objects = new Object[8];
-			objects[0] = map.get("id").toString();
+			Object[] objects = new Object[10];
+			objects[0] = Integer.parseInt(map.get("id").toString());
 			objects[1] = map.get("image").toString();
 			objects[2] = map.get("tensanpham").toString();
 			objects[3] = map.get("soluong").toString();
@@ -58,6 +59,8 @@ public class CommonRepository {
 			objects[5] = map.get("categoryid").toString();
 			objects[6] = map.get("hangsxid").toString();
 			objects[7] = map.get("trangthai").toString();
+			objects[8] = map.get("name").toString();
+			objects[9] = map.get("categoryname").toString();
 			lsProduct.add(objects);
 		}
 		
@@ -77,13 +80,13 @@ public class CommonRepository {
 		}
 		
 		if (category != null) {
-			str.append(" 	AND categoryid IN ("+category+") ");
+			str.append(" 	AND categoryid IN ("+replaceDemo.convertFromListLongToString(category)+") ");
 		}
 		if (hangsx != null) {
-			str.append(" 	AND hangsxid IN ("+hangsx+") ");
+			str.append(" 	AND hangsxid IN ("+replaceDemo.convertFromListLongToString(hangsx)+") ");
 		}
 		if (trangthai != null) {
-			str.append(" 	AND trangthai IN ("+trangthai+") ");
+			str.append(" 	AND trangthai IN ("+replaceDemo.convertFromListIntToString(trangthai)+") ");
 		}
 		
 		return _jdbcTemplate.queryForObject(str.toString(), Long.class);

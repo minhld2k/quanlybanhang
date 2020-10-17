@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -25,7 +26,7 @@ public class replaceDemo {
 	public static Map<String, String> mapFromFile = new HashMap<String, String>();
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		System.out.println("=>"+replace("sam sung"));
+//		System.out.println("=>"+replace("sam sung"));
 		//System.out.println("=>"+getBcrypt("12345"));
 		//System.out.println("=>"+checkBcrypt("12345", "$2a$12$4vEjEBDa/LlHgnA1H93jC.Cx8nUK3Ob.PjX/jNN4fYPQ.SzWhq"));
 	}
@@ -151,5 +152,16 @@ public class replaceDemo {
 		}
     	return false;
     }
+    
+    public static String convertFromListIntToString(List<Integer> ls) {
+    	String str = ls.toString();
+    	return str.substring(1, str.length()-1);
+    }
+    
+    public static String convertFromListLongToString(List<Long> ls) {
+    	String str = ls.toString();
+    	return str.substring(1, str.length()-1);
+    }
+
 
 }

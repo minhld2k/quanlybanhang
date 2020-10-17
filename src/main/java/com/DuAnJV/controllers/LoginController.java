@@ -49,7 +49,7 @@ public class LoginController {
 			List<Chucnang> ls = this.chucnangService.findAllChucnangByEmail(username);
 			session.setAttribute("MENU", ls);
 			session.setAttribute("USERNAME", username);
-			return "redirect:/admin";
+			return "redirect:/user/list";
 		} else {
 			{
 				System.out.println("login that bai");
