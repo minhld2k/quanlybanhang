@@ -59,7 +59,7 @@ public class RoleController {
 					pageNumber = 1;
 				}
 				if (null == session.getAttribute("PAGESIZE") || session.getAttribute("PAGESIZE").equals("")) {
-					session.setAttribute("PAGESIZE", 5);
+					session.setAttribute("PAGESIZE", 10);
 				}
 				long count = this.roleService.count();
 				session.setAttribute("COUNT", count);
@@ -261,7 +261,7 @@ public class RoleController {
 	@RequestMapping("/pagesize")
 	public String size(@RequestParam(name = "pagesize") int pagesize, HttpSession session) {
 		if (0 == pagesize) {
-			session.setAttribute("PAGESIZE", 5);
+			session.setAttribute("PAGESIZE", 10);
 		} else {
 			session.setAttribute("PAGESIZE", pagesize);
 		}

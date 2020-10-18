@@ -108,3 +108,117 @@ function GetURLParameter(sPageURL,sParam) {
         return sParameterName[1];
     }
 }
+
+function formAddValidation() {
+	var tenSanPhamAdd = $('#tensanphamAdd').val();
+	var soLuongAdd = $('#soluongAdd').val();
+	var giaTienAdd = $('#giatienAdd').val();
+	var trangThaiAdd = $('input[name="trangthai"]:checked').val();
+	var categoryAdd = $('#categoryAdd').val();
+	var hangsxAdd = $('#hangsxAdd').val();
+	
+	if (tenSanPhamAdd == "") {
+		$('#errorTensanphamAdd').show();
+		$('#errorTensanphamAdd').text("Vui lòng nhập tên sản phẩm");
+		return false;
+	} else {
+		$('#errorTensanphamAdd').hide();
+	}
+
+	if (soLuongAdd == "") {
+		$('#errorSoluongAdd').show();
+		$('#errorSoluongAdd').text("Vui lòng nhập số lượng");
+		return false;
+	} else {
+		$('#errorSoluongAdd').hide();
+		var pattern_password = /^[0-9]+$/;
+		if (!pattern_password.test(soLuongAdd)) {
+			$('#errorSoluongAdd').show();
+			$('#errorSoluongAdd').text("Sai dữ liệu");
+			return false;
+		} else {
+			$('#errorSoluongAdd').hide();
+		}
+	}
+	
+	if (giaTienAdd == "") {
+		$('#errorGiatienAdd').show();
+		$('#errorGiatienAdd').text("Vui lòng nhập giá tiền");
+		return false;
+	} else {
+		$('#errorGiatienAdd').hide();
+		var pattern_password = /^[0-9]+$/;
+		if (!pattern_password.test(giaTienAdd)) {
+			$('#errorGiatienAdd').show();
+			$('#errorGiatienAdd').text("Sai dữ liệu");
+			return false;
+		} else {
+			$('#errorGiatienAdd').hide();
+		}
+	}
+	
+	if (null == categoryAdd || "" == categoryAdd) {
+		$('#errorCategoryAdd').show();
+		$('#errorCategoryAdd').text("Vui lòng chọn Loại sản phẩm");
+		return false;
+	} else {
+		$('#errorCategoryAdd').hide();
+	}
+	
+	if (null == trangThaiAdd || "" == trangThaiAdd) {
+		$('#errorTrangThaiAdd').show();
+		$('#errorTrangThaiAdd').text("Vui lòng chọn trạng thái");
+		return false;
+	}else {
+		$('#errorTrangThaiAdd').hide();
+	}
+	
+	if (null == hangsxAdd || "" == hangsxAdd) {
+		$('#errorHangsxAdd').show();
+		$('#errorHangsxAdd').text("Vui lòng chọn hãng sản xuất");
+		return false;
+	}else {
+		$('#errorHangsxAdd').hide();
+	}
+	return true;
+}
+
+function formEditValidation() {
+	var tensanphamEdit = $('#tensanphamEdit').val();
+	var trangthaiEdit = $('input[name="trangthai"]:checked').val();
+	var categoryEdit = $('#categoryEdit').val();
+	var hangsxEdit = $('#hangsxEdit').val();
+	
+	if (tensanphamEdit == "") {
+		$('#errorTensanphamEdit').show();
+		$('#errorTensanphamEdit').text("Vui lòng nhập tên sản phẩm");
+		return false;
+	} else {
+		$('#errorTensanphamEdit').hide();
+	}
+
+	if (null == categoryEdit || "" == categoryEdit) {
+		$('#errorCategoryEdit').show();
+		$('#errorCategoryEdit').text("Vui lòng chọn Loại sản phẩm");
+		return false;
+	} else {
+		$('#errorCategoryEdit').hide();
+	}
+	
+	if (null == trangthaiEdit || "" == trangthaiEdit) {
+		$('#"errorTrangThaiEdit"').show();
+		$('#"errorTrangThaiEdit"').text("Vui lòng chọn trạng thái");
+		return false;
+	}else {
+		$('#"errorTrangThaiEdit"').hide();
+	}
+	
+	if (null == hangsxEdit || "" == hangsxEdit) {
+		$('#errorHangsxEdit').show();
+		$('#errorHangsxEdit').text("Vui lòng chọn hãng sản xuất");
+		return false;
+	}else {
+		$('#errorHangsxEdit').hide();
+	}
+	return true;
+}

@@ -210,7 +210,7 @@
 							<p id="errorTensanphamAdd" style="color: red"></p>
 
 							<div class="form-group">
-								<label for="fullname" class="col-form-label">Số lượng<strong>*</strong>:</label> <input
+								<label for="fullname" class="col-form-label">Số lượng <strong>*</strong>:</label> <input
 									type="number" class="form-control" id="soluongAdd" name="soluong">
 							</div>
 							<p id="errorSoluongAdd" style="color: red"></p>
@@ -246,7 +246,7 @@
 									</label>
 								</div>
 							</div>
-							<p id="errorGenderAdd" style="color: red"></p>
+							<p id="errorTrangThaiAdd" style="color: red"></p>
 							
 							<div class="form-group">
 							<label>Hình ảnh</label> <input type="file" class="form-control" 
@@ -274,6 +274,7 @@
 										th:value="${item.id}" th:text="${item.name}"></option>
 								</select>
 							</div>
+							<p id="errorHangsxAdd" style="color: red"></p>
 
 						</div>
 						<div class="modal-footer">
@@ -335,7 +336,7 @@
 									</label>
 								</div>
 							</div>
-							<p id="errorGenderEdit" style="color: red"></p>
+							<p id="errorTrangThaiEdit" style="color: red"></p>
 							
 							<div class="form-group">
 							<label>Hình ảnh</label> <input type="file" class="form-control" 
@@ -363,6 +364,7 @@
 										th:value="${item.id}" th:text="${item.name}"></option>
 								</select>
 							</div>
+							<p id="errorHangsxEdit" style="color: red"></p>
 
 						</div>
 						<div class="modal-footer">

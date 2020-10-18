@@ -209,7 +209,11 @@ function formAddValidation() {
 		}
 	}
 	
-	if (fullnameAdd != "") {
+	if (fullnameAdd == "") {
+		$('#errorFullnameAdd').show();
+		$('#errorFullnameAdd').text("Vui lòng nhập họ và tên");
+		return false;
+	}else {
 		$('#errorFullnameAdd').hide();
 		var pattern_fullname = /^([^\t]+)$/;
 		if (!pattern_fullname.test(fullnameAdd)) {
@@ -280,7 +284,11 @@ function formEditValidation() {
 		}
 	}
 	
-	if (fullnameEdit != "") {
+	if (fullnameEdit == "") {
+		$('#errorFullnameEdit').show();
+		$('#errorFullnameEdit').text("Vui lòng nhập họ và tên");
+		return false;
+	}else {
 		$('#errorFullnameEdit').hide();
 		var pattern_fullname = /^([^\t]+)$/;
 		if (!pattern_fullname.test(fullnameEdit)) {

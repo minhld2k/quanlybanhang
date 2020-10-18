@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,11 +45,13 @@ public class UserController {
 
 	@Autowired
 	ChucnangService chucnangService;
+	
+	Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping("/pagesize")
 	public String size(@RequestParam(name = "pagesize") int pagesize, HttpSession session) {
 		if (0 == pagesize) {
-			session.setAttribute("PAGESIZE", 5);
+			session.setAttribute("PAGESIZE", 10);
 		} else {
 			session.setAttribute("PAGESIZE", pagesize);
 		}
@@ -63,6 +67,7 @@ public class UserController {
 		String username = (String) session.getAttribute("USERNAME");
 		String url = request.getServletPath();
 		User user = this.userService.findUserByEmail(username);
+		logger.debug("hello");
 		if (null == username || "".equals(username)) {
 			return "redirect:/loginadmin";
 		} else {
@@ -73,7 +78,7 @@ public class UserController {
 					pageNumber = 1;
 				}
 				if (null == session.getAttribute("PAGESIZE") || session.getAttribute("PAGESIZE").equals("")) {
-					session.setAttribute("PAGESIZE", 5);
+					session.setAttribute("PAGESIZE", 10);
 				}
 				long count = this.userService.count();
 				session.setAttribute("COUNT", count);
