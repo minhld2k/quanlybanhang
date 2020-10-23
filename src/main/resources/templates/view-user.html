@@ -30,12 +30,12 @@
 				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
 					<button type="button" class="btn btn-danger deleteButton"
 						style="float: right; margin-left: 10px; margin-right: 10px;">
-						<span class="glyphicon glyphicon-trash"></span>DELETE
+						<span class="glyphicon glyphicon-trash"></span>Xóa
 					</button>
 					
 					<button type="button" class="btn btn-primary addButton"
 						 style="float: right;">
-						<span class="glyphicon glyphicon-plus"></span>Add new
+						<span class="glyphicon glyphicon-plus"></span>Thêm mới
 					</button>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 						</form>
 					</div>
 
-					<div class="col-sm-4">
+					<div class="col-sm-4" style="text-align: center;">
 						<ul class="pagination justify-content-center">
 							<li
 								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
@@ -179,7 +179,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">New User</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Thêm mới người dùng</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -197,7 +197,7 @@
 							<p id="errorEmailAdd" style="color: red"></p>
 
 							<div class="form-group">
-								<label for="password" class="col-form-label">Password(<label style="color: red">*</label>):</label> <input
+								<label for="password" class="col-form-label">Mật khẩu (<label style="color: red">*</label>):</label> <input
 									type="password" class="form-control" id="passwordAdd"
 									name="password">
 							</div>
@@ -210,7 +210,7 @@
 							<p id="errorFullnameAdd" style="color: red"></p>
 							
 							<div class="form-group">
-								<label for="phone" class="col-form-label">Phone:</label> <input
+								<label for="phone" class="col-form-label">Điện thoại:</label> <input
 									type="text" class="form-control" id="phoneAdd" name="phone">
 							</div>
 							<p id="errorPhoneAdd" style="color: red"></p>
@@ -245,7 +245,7 @@
 							<p id="errorAddressAdd" style="color: red"></p>
 							
 							<div class="form-group">
-								<label for="name" class="mr-sm-2">Vai trò(<label style="color: red">*</label>):</label> 
+								<label for="name" class="mr-sm-2">Vai trò (<label style="color: red">*</label>):</label> 
 				        		<select class="form-control" id="roleAdd" name="role[]" multiple >
 									<option th:each="item:${ROLES}"
 										th:value="${item.id}" th:text="${item.rolename}"></option>
@@ -254,7 +254,7 @@
 							<p id="errorRoleAdd" style="color: red"></p>
 							
 							<div class="form-group">
-								<label for="name" class="mr-sm-2">Chức năng</label> 
+								<label for="name" class="mr-sm-2">Chức năng </label> 
 				        		<select class="form-control" id="chucnangAdd" name="chucnang[]" multiple >
 									<option th:each="item: ${CNS}"
 										th:value="${item.id}" th:text="${item.name}"></option>
@@ -264,8 +264,8 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary" id="add">save</button>
+								data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary" id="add">Lưu</button>
 						</div>
 					</div>
 				</div>
@@ -279,7 +279,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Cập nhật người dùng</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -303,7 +303,7 @@
 							<p id="errorFullnameEdit" style="color: red"></p>
 							
 							<div class="form-group">
-								<label for="phone" class="col-form-label">Phone:</label> <input
+								<label for="phone" class="col-form-label">Điện thoại :</label> <input
 									type="text" class="form-control" id="phoneEdit" name="phone">
 							</div>
 							<p id="errorPhoneEdit" style="color: red"></p>
@@ -357,8 +357,8 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary" id="save">save</button>
+								data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary" id="save">Lưu</button>
 						</div>
 					</div>
 				</div>
@@ -369,7 +369,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Confirm delete</h5>
+						<h5 class="modal-title">Thông báo</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -379,9 +379,9 @@
 						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="deleteId">Yes</button>
+						<button type="button" class="btn btn-primary" id="deleteId">Xóa</button>
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
+							data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>

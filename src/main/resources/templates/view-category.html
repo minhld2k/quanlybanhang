@@ -21,11 +21,11 @@
 				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
 					<button type="button" class="btn btn-danger deleteButton"
 						style="float: right; margin-left: 10px; margin-right: 10px;">
-						<span class="glyphicon glyphicon-trash"></span>DELETE
+						<span class="glyphicon glyphicon-trash"></span>Xóa
 					</button>
 					<button type="button" class="btn btn-primary addButton"
 						style="float: right;">
-						<span class="glyphicon glyphicon-plus"></span>Add new
+						<span class="glyphicon glyphicon-plus"></span>Thêm mới
 					</button>
 
 				</div>
@@ -60,8 +60,8 @@
 						<thead>
 							<tr>
 								<th><input id="selectAll" type="checkbox"></th>
-								<th>NAME</th>
-								<th>KEY</th>
+								<th>Tên danh mục</th>
+								<th>Mã danh mục</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -91,7 +91,7 @@
 						</form>
 					</div>
 
-					<div class="col-sm-4">
+					<div class="col-sm-4" style="text-align: center;">
 						<ul class="pagination justify-content-center">
 							<li
 								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
@@ -141,7 +141,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">New Danh mục</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Thêm mới danh mục</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -172,8 +172,8 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary">save</button>
+								data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary">Lưu</button>
 						</div>
 					</div>
 				</div>
@@ -187,7 +187,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Edit danh mục</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Cập nhật danh mục</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -219,8 +219,8 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary">save</button>
+								data-dismiss="modal">Đóng</button>
+							<button type="submit" class="btn btn-primary">Lưu</button>
 						</div>
 					</div>
 				</div>
@@ -231,7 +231,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Confirm delete</h5>
+						<h5 class="modal-title">Thông báo</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -241,9 +241,9 @@
 						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="deleteId">Yes</button>
+						<button type="button" class="btn btn-primary" id="deleteId">Xóa</button>
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
+							data-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
