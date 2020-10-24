@@ -39,4 +39,6 @@ public interface ChucnangService {
 
 	List<Chucnang> findAllChucnangByEmail(String email);
 
+	List<Chucnang> findAllChucNangByUserId(long id);
+
 }

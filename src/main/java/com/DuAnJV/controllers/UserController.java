@@ -67,7 +67,6 @@ public class UserController {
 		String username = (String) session.getAttribute("USERNAME");
 		String url = request.getServletPath();
 		User user = this.userService.findUserByEmail(username);
-		logger.debug("hello");
 		if (null == username || "".equals(username)) {
 			return "redirect:/loginadmin";
 		} else {
@@ -454,17 +453,12 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/oneUserCNS", produces = "application/json")
-	@ResponseBody
-	public Map<String, String> oneUser(Long id, ModelMap model) {
-		User user = this.userService.findById(id);
-		List<Long> lscn = new ArrayList<Long>();
-		List<Chucnang> lscns = this.chucnangService.findAllChucnangByEmail(user.getEmail());
-		for (Chucnang chucnang : lscns) {
-			lscn.add(chucnang.getId());
-		}
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("chucnang", lscn.toString());
-		return map;
+	public String oneUser(HttpSession session, ModelMap model) {
+		User user = (User) session.getAttribute("USERLOGIN");
+		String birthday =  replaceDemo.toString(user.getBirthday(), "dd-MM-yyyy");
+		user.setBirthday(replaceDemo.todate(birthday, "dd-MM-yyyy"));
+		model.addAttribute("USER",user);
+		return "user-detail";
 	}
 
 	@RequestMapping(value = "/deleteAll", method = { RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.GET })
@@ -498,6 +492,36 @@ public class UserController {
 			e.printStackTrace();
 		}
 		return ajaxResponse;
+	}
+	
+	@RequestMapping(value = "/updateUser", method = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET })
+	public String updateUser(@RequestParam("id") Long id, @RequestParam("email") String email, HttpSession session,
+			@RequestParam("fullname") String fullname, @RequestParam("address") String address,
+			@RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
+			@RequestParam("gender") byte gender,@RequestParam("password") String password) {
+		User user = this.userService.findById(id);
+		
+		Date date = new Date(0);
+		if (birthday != null) {
+			date = replaceDemo.todate(birthday, "dd-MM-yyyy");
+		}
+		user.setBirthday(date);
+		user.setFullname(fullname);
+		user.setAddress(address);
+		user.setPhone(phone);
+		user.setGender(gender);
+		user.setEmail(email);
+		user.setChucnangs(this.chucnangService.findAllChucNangByUserId(id));
+		user.setRoles(this.roleService.findAllRoleByUserId(id));
+		if (!password.isEmpty()) {
+			user.setPassword(password);
+		}
+		user.setIsdelete((byte) 0);
+		user.setUpdateby((String) session.getAttribute("USERNAME"));
+		user.setUpdateday(new Timestamp(new Date().getTime()));
+		this.userService.update(user);
+		session.setAttribute("USERLOGIN", user);
+		return "redirect:/user/oneUserCNS";
 	}
 
 	@ModelAttribute(name = "ROLES")

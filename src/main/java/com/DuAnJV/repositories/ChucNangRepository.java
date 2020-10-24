@@ -104,4 +104,9 @@ public interface ChucNangRepository extends JpaRepository<Chucnang, Long> {
 			"SELECT id,name,key,url,chucnangchaid,isdelete,creatby,creatday,updateby,updateday\r\n" + 
 			"FROM tree where isdelete = 0 order by path",nativeQuery = true)
 	List<Chucnang> findAllChucnangByEmail(String email,String email1);
+	
+	@Query(value = "select cn.id,cn.name,cn.key,cn.creatday,cn.creatby,cn.updateby,cn.updateday,cn.isdelete,cn.url,cn.chucnangchaid from qtht_chucnangs cn " + 
+			"	inner join user_chucnang ucn on ucn.chucnangid = cn.id " + 
+			"where ucn.userid = ? and cn.isdelete = 0", nativeQuery = true)
+	List<Chucnang> findAllChucNangByUserId(long id);
 }

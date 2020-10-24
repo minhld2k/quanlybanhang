@@ -97,6 +97,11 @@ public class ChucnangServiceImpl implements ChucnangService {
 	public List<Chucnang> findAllChucnangByEmail(String email) {
 		return this.chucNangRepository.findAllChucnangByEmail(email,email);
 	}
+
+	@Override
+	public List<Chucnang> findAllChucNangByUserId(long id) {
+		return this.chucNangRepository.findAllChucNangByUserId(id);
+	}
 	
 	
 }

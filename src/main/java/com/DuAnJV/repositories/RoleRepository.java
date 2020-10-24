@@ -73,4 +73,9 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 	
 	@Query(value="select * from qtht_roles where id =?1",nativeQuery = true)
 	Role findByid(Long id);
+	
+	@Query(value="select r.id,r.rolekey,r.rolename,r.creatday,r.creatby,r.updateby,r.updateday,r.isdelete from qtht_roles r " + 
+			"	inner join user_role ur on ur.roleid = r.id " + 
+			"where ur.userid = ? and r.isdelete = 0", nativeQuery =true)
+	List<Role> findAllRoleByUserId(long id);
 }

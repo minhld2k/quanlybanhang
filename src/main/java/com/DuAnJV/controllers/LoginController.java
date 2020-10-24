@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,22 +32,19 @@ public class LoginController {
 
 	@Autowired
 	ChucnangService chucnangService;
+	
+	Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@RequestMapping("/loginadmin")
-	public String showLogin(HttpServletRequest request) {
+	public String showLogin(HttpServletRequest request,HttpSession session) {
 		return "loginadmin";
-	}
-
-	@RequestMapping("/admin")
-	public String show() {
-		return "layouts/layout-admin";
 	}
 
 	@PostMapping("/checkLogin")
 	public String checkLogin(@RequestParam("username") String username, @RequestParam("password") String password,
 			ModelMap model, HttpSession session) {
 		if (this.userservice.checkLogin(username, password)) {
-			System.out.println("login thanh cong");
+			logger.info("login success with email "+ username);
 			List<Chucnang> ls = this.chucnangService.findAllChucnangByEmail(username);
 			User user = this.userservice.findUserByEmail(username);
 			session.setAttribute("MENU", ls);
@@ -54,8 +53,8 @@ public class LoginController {
 			return "redirect:/user/list";
 		} else {
 			{
-				System.out.println("login that bai");
-				model.addAttribute("ERROR", "Username and password not exist");
+				logger.error("Error: Tài khoản hoặc mật khẩu không chính xác");
+				session.setAttribute("ERROR", "Tài khoản hoặc mật khẩu không chính xác");
 				return "redirect:/loginadmin";
 			}
 		}
@@ -83,7 +82,10 @@ public class LoginController {
 
 	@RequestMapping("/logout")
 	public String logout(HttpSession session, ModelMap model) {
+		session.removeAttribute("ERROR");
+		session.removeAttribute("MENU");
 		session.removeAttribute("USERNAME");
+		session.removeAttribute("USERLOGIN");
 		return "redirect:/loginadmin";
 	}
 }

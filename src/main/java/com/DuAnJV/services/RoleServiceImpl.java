@@ -61,16 +61,6 @@ public class RoleServiceImpl implements RoleService {
 		return this.roleRepository.count();
 	}
 
-//	@Override
-//	public boolean checkExits(Role role) {
-//
-//		Role u = this.findByRoleKeyAndIsDelete(role.getRolekey(), (byte) 0);
-//		if (this.findById(role.getId()).isPresent() || u != null ) {
-//			return false;
-//		}
-//		return true;
-//	}
-
 	@Override
 	public long countByRolename(String roleName) {
 		return this.roleRepository.countByRolename(roleName);
@@ -95,10 +85,17 @@ public class RoleServiceImpl implements RoleService {
 	public long countByNameAndKey(String rolename, String rolekey) {
 		return this.roleRepository.countByNameAndKey(rolename, "%"+rolekey+"%");
 	}
+	
+	
 
 	@Override
 	public List<Long> findCNSById(Long id) {
 		return this.roleRepository.findCNSById(id);
+	}
+
+	@Override
+	public List<Role> findAllRoleByUserId(long id) {
+		return this.roleRepository.findAllRoleByUserId(id);
 	}
 
 }

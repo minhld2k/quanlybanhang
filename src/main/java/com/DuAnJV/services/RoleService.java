@@ -20,8 +20,6 @@ public interface RoleService {
 
 	void add(Role role);
 
-	//boolean checkExits(Role role);
-
 	long countByNameAndKey(String rolename, String rolekey);
 
 	List<Role> findAllByRolenameAndRolekey(String rolename, String rolekey, Integer pagesize, Integer offset);
@@ -33,5 +31,7 @@ public interface RoleService {
 	long countByRolename(String roleName);
 
 	List<Long> findCNSById(Long id);
+
+	List<Role> findAllRoleByUserId(long id);
 
 }
