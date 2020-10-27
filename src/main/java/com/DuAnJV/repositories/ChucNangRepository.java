@@ -1,28 +1,13 @@
 package com.DuAnJV.repositories;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.DuAnJV.models.Chucnang;
 
 public interface ChucNangRepository extends JpaRepository<Chucnang, Long> {
-	@Modifying
-	@Transactional
-	@Query(value = "INSERT INTO qtht_chucnangs (id,name,key,creatday,"
-			+ "creatby,updateday,updateby,isdelete,chucnangchaid,url) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)", nativeQuery = true)
-	void add(Long id, String name,String key, Date creatDay, String creatBy,
-			Date updateDay, String updateBy, Byte isDelete, Long chucnangchaid,String url);
-
-	@Modifying
-	@Transactional
-	@Query(value = "update qtht_chucnangs set name=?1,key=?2,updateday=?3,"
-			+ "updateby=?4,isdelete=?5,chucnangchaid=?6,url=?7 where id=?8", nativeQuery = true)
-	int update(String name,String key, Date updateDay, String updateBy, Byte isDelete,Long chucnangchaid,String url, Long id);
 	
 	@Query(value = "select * from qtht_chucnangs, to_tsquery(?1) query "
 			+ "where query @@ fulltext_ and isdelete = ?2 "

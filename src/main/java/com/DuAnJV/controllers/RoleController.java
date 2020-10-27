@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -171,14 +170,10 @@ public class RoleController {
 			@RequestParam(name = "chucnang[]") List<Long> chucnangid) {
 		Role role = new Role(id, rolekey, rolename);
 		List<Chucnang> ls = new ArrayList<Chucnang>();
-		System.out.println("=>" + chucnangid);
 		for (Long long1 : chucnangid) {
 			ls.add(this.chucnangService.findById(long1).get());
 		}
 		role.setChucnang(ls);
-		if (null == role.getId() || role.getId().equals("")) {
-			role.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		role.setIsdelete((byte) 0);
 		role.setCreatby((String) session.getAttribute("USERNAME"));
 		role.setCreatday(new Timestamp(new Date().getTime()));
@@ -194,14 +189,10 @@ public class RoleController {
 			@RequestParam(name = "chucnang[]") List<Long> chucnangid) {
 		Role role = new Role(id, rolekey, rolename);
 		List<Chucnang> ls = new ArrayList<Chucnang>();
-		System.out.println("=>" + chucnangid);
 		for (Long long1 : chucnangid) {
 			ls.add(this.chucnangService.findById(long1).get());
 		}
 		role.setChucnang(ls);
-		if (null == role.getId() || role.getId().equals("")) {
-			role.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		role.setIsdelete((byte) 0);
 		role.setUpdateby((String) session.getAttribute("USERNAME"));
 		role.setUpdateday(new Timestamp(new Date().getTime()));

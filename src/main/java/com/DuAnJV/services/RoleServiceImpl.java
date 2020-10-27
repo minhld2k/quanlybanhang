@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.DuAnJV.models.Chucnang;
 import com.DuAnJV.models.Role;
 import com.DuAnJV.repositories.RoleRepository;
 
@@ -17,22 +16,12 @@ public class RoleServiceImpl implements RoleService {
 	
 	@Override
 	public void add(Role role) {
-		this.roleRepository.add(role.getId(), role.getRolename(), role.getRolekey(), role.getCreatday(),
-				role.getCreatby(), role.getUpdateday(), role.getUpdateby(), role.getIsdelete());
-		for (Chucnang cn : role.getChucnang()) {
-			this.roleRepository.addCNS(role.getId(), cn.getId());
-		}
+		this.roleRepository.save(role);
 	}
 
 	@Override
-	public int update(Role role) {
-		this.roleRepository.update(role.getRolename(), role.getRolekey(), role.getUpdateday(),
-				role.getUpdateby(), role.getIsdelete(), role.getId());
-		this.roleRepository.deleteCNS(role.getId());
-		for (Chucnang cn : role.getChucnang()) {
-			this.roleRepository.addCNS(role.getId(), cn.getId());
-		}
-		return 1;
+	public void update(Role role) {
+		this.roleRepository.save(role);
 		
 	}
 

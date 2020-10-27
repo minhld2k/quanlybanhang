@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -386,9 +385,6 @@ public class UserController {
 			lsrole.add(this.roleService.findById(long1));
 		}
 		user.setRoles(lsrole);
-		if (null == user.getId() || user.getId().equals("")) {
-			user.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		user.setIsdelete((byte) 0);
 		user.setCreatby(username);
 		user.setCreatday(new Timestamp(new Date().getTime()));
@@ -422,9 +418,6 @@ public class UserController {
 			lsrole.add(this.roleService.findById(long1));
 		}
 		user.setRoles(lsrole);
-		if (null == user.getId() || user.getId().equals("")) {
-			user.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		user.setIsdelete((byte) 0);
 		user.setUpdateby((String) session.getAttribute("USERNAME"));
 		user.setUpdateday(new Timestamp(new Date().getTime()));
@@ -468,7 +461,7 @@ public class UserController {
 			user.setIsdelete((byte) 1);
 			user.setUpdateby((String) session.getAttribute("USERNAME"));
 			user.setUpdateday(new Timestamp(new Date().getTime()));
-			this.userService.deleteById(user);
+			this.userService.update(user);
 		}
 		if (session.getAttribute("KEYWORD") != null) {
 			return "redirect:/user/search";

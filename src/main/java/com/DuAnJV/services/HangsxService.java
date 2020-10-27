@@ -14,7 +14,7 @@ public interface HangsxService {
 
 	List<Hangsx> findAll(int limit, int offset);
 
-	int update(Hangsx hangsx);
+	void update(Hangsx hangsx);
 
 	void add(Hangsx hangsx);
 

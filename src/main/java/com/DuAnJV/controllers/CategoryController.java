@@ -3,7 +3,6 @@ package com.DuAnJV.controllers;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -173,9 +172,6 @@ public class CategoryController {
 			@RequestParam("categoryname") String categoryname, HttpSession session) {
 		
 		Category category = new Category(id, categoryname, categorykey);
-		if (null == category.getId() || category.getId().equals("")) {
-			category.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		category.setIsdelete((byte) 0);
 		category.setCreatby((String) session.getAttribute("USERNAME"));
 		category.setCreatday(new Timestamp(new Date().getTime()));

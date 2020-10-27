@@ -8,12 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,19 +30,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.DuAnJV.common.replaceDemo;
-import com.DuAnJV.dto.ProductDTO;
 import com.DuAnJV.models.Category;
-import com.DuAnJV.models.Chucnang;
 import com.DuAnJV.models.Hangsx;
 import com.DuAnJV.models.Product;
-import com.DuAnJV.models.Role;
 import com.DuAnJV.models.User;
 import com.DuAnJV.services.CategoryService;
 import com.DuAnJV.services.HangsxService;
 import com.DuAnJV.services.ProductService;
 import com.DuAnJV.services.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping(value="/sanpham")
@@ -195,9 +188,6 @@ public class ProductController {
 		}
 		Product product = new Product(id, tensanpham,soluong, giatien,ram
 				,manhinh, trangthai,imageDefault, mota);
-		if (null == product.getId() || product.getId().equals("")) {
-			product.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		product.setIsdelete((byte) 0);
 		product.setCreatby((String) session.getAttribute("USERNAME"));
 		product.setCreatday(new Timestamp(new Date().getTime()));

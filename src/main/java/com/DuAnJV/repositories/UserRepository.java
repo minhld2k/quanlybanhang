@@ -1,56 +1,13 @@
 package com.DuAnJV.repositories;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.DuAnJV.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-	
-	@Modifying
-	@Transactional
-	@Query(value = "INSERT INTO qtht_users (id,email,password,fullname,gender,birthday,address,phone,"
-			+ "creatday,creatby,updateday,updateby,isdelete) "
-			+ "VALUES(?1,?2,?3,?4,?5,(CAST (CAST(?6 AS character varying) AS date)),?7,?8,?9,?10,?11,?12,?13)", nativeQuery = true)
-	void add(Long id,String email,String password,String fullname,Byte gender,Date birthday,String address,String phone,
-			Date creatDay,String creatBy,Date updateDay,String updateBy,Byte isDelete);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "Insert INTO user_role (userid,roleid) values(?1,?2)", nativeQuery = true)
-	void addRoles(Long userid,Long roleid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "Insert INTO user_chucnang (userid,chucnangid) values(?1,?2)", nativeQuery = true)
-	void addCNS(Long userid,Long chucnangid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "DELETE FROM user_role where userid = ?1", nativeQuery = true)
-	void deleteRoles(Long userid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "DELETE FROM user_chucnang where userid = ?1", nativeQuery = true)
-	void deleteCNS(Long userid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "update qtht_users set email=?1,fullname=?2,gender=?3,birthday=(CAST (CAST(?4 AS character varying) AS date))"
-			+ ",address=?5,phone=?6,updateday=?7,updateby=?8,isdelete=?9 where id=?10",nativeQuery = true)
-	void update(String email,String fullname,Byte gender,Date birthday,String address,String phone,
-			Date updateDay,String updateBy,Byte isDelete,Long id);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "update qtht_users set updateday=?1,updateby=?2,isdelete=?3 where id=?4",nativeQuery = true)
-	void deleteById(Date updateDay,String updateBy,Byte isDelete,Long id);
 	
 	@Query(value="select * from qtht_users where isdelete = 0 limit ?1 offset ?2",nativeQuery =true)
 	List<User> findAll(Integer pagesize, Integer offset);

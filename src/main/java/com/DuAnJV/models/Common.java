@@ -22,14 +22,14 @@ public abstract class Common implements Serializable {
 	private String creatby;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date creatday;
 	
 	@Column
 	private String updateby;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateday;
 	
 	public Common(Byte isdelete, String creatby, Date creatday, String updateby, Date updateday) {

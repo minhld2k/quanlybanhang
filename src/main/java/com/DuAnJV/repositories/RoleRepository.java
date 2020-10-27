@@ -1,40 +1,13 @@
 package com.DuAnJV.repositories;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.DuAnJV.models.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
-	
-	@Modifying
-	@Transactional
-	@Query(value = "INSERT INTO qtht_roles (id,rolename,rolekey,creatday,"
-			+ "creatby,updateday,updateby,isdelete) VALUES(?1,?2,?3,?4,?5,?6,?7,?8)", nativeQuery = true)
-	void add(Long role_id,String role_name,String role_key,Date creatDay,
-			String creatBy,Date updateDay,String updateBy,Byte isDelete);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "Insert INTO vaitrovachucnang (roleid,chucnangid) values(?1,?2)", nativeQuery = true)
-	void addCNS(Long roleid,Long chucnangid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "DELETE FROM vaitrovachucnang where roleid = ?1", nativeQuery = true)
-	void deleteCNS(Long roleid);
-	
-	@Modifying
-	@Transactional
-	@Query(value = "update qtht_roles set rolename=?1,rolekey=?2,updateday=?3,"
-			+ "updateby=?4,isdelete=?5 where id=?6",nativeQuery = true)
-	void update(String role_name,String role_key,Date updateDay,
-			String updateBy,Byte isDelete,Long role_id);
 	
 	Role findByRolekeyAndIsdelete(String roleKey, Byte isDelete);
 	

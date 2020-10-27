@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -88,9 +87,6 @@ public class ChucnangController {
 
 	@RequestMapping(value = "/addNew", method = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET })
 	public String add(Chucnang chucnang, HttpSession session) {
-		if (null == chucnang.getId() || chucnang.getId().equals("")) {
-			chucnang.setId(ThreadLocalRandom.current().nextLong(0, 900000000));
-		}
 		chucnang.setIsdelete((byte) 0);
 		chucnang.setCreatby((String) session.getAttribute("USERNAME"));
 		chucnang.setCreatday(new Timestamp(new Date().getTime()));
@@ -156,7 +152,6 @@ public class ChucnangController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		System.out.println("=>" + ajaxResponse);
 		return ajaxResponse;
 	}
 

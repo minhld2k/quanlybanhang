@@ -16,7 +16,7 @@ public interface RoleService {
 
 	Role findByRoleKeyAndIsDelete(String roleKey, Byte isDelete);
 
-	int update(Role role);
+	void update(Role role);
 
 	void add(Role role);
 

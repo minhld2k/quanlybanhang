@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.DuAnJV.common.replaceDemo;
 import com.DuAnJV.models.Chucnang;
-import com.DuAnJV.models.Role;
 import com.DuAnJV.models.User;
 import com.DuAnJV.repositories.UserRepository;
 
@@ -25,35 +24,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void add(User user) {
-		this.userRepository.add(user.getId(), user.getEmail(), replaceDemo.getBcrypt(user.getPassword()),
-				user.getFullname(), user.getGender(), user.getBirthday(), user.getAddress(), user.getPhone(),
-				user.getCreatday(), user.getCreatby(), user.getUpdateday(), user.getUpdateby(), user.getIsdelete());
-		for (Role role : user.getRoles()) {
-			this.userRepository.addRoles(user.getId(), role.getId());
-		}
-		if (user.getChucnangs() != null) {
-			for (Chucnang cn : user.getChucnangs()) {
-				this.userRepository.addCNS(user.getId(), cn.getId());
-			}
-		}
+		this.userRepository.save(user);
 	}
 
 	@Override
 	public void update(User user) {
-		this.userRepository.update(user.getEmail(), user.getFullname(),
-				user.getGender(), user.getBirthday(), user.getAddress(), user.getPhone(), user.getUpdateday(), user.getUpdateby(),
-				user.getIsdelete(), user.getId());
-
-		this.userRepository.deleteRoles(user.getId());
-		this.userRepository.deleteCNS(user.getId());
-		for (Role role : user.getRoles()) {
-			this.userRepository.addRoles(user.getId(), role.getId());
-		}
-		if (user.getChucnangs() != null) {
-			for (Chucnang cn : user.getChucnangs()) {
-				this.userRepository.addCNS(user.getId(), cn.getId());
-			}
-		}
+		this.userRepository.save(user);
 	}
 
 	@Override
@@ -84,13 +60,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Long> findRoleById(Long id) {
 		return this.userRepository.findRoleById(id);
-	}
-
-	@Override
-	public void deleteById(User user) {
-		this.userRepository.deleteRoles(user.getId());
-		this.userRepository.deleteCNS(user.getId());
-		this.userRepository.deleteById(user.getUpdateday(), user.getUpdateby(), user.getIsdelete(), user.getId());
 	}
 
 	@Override

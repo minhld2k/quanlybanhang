@@ -17,15 +17,12 @@ public class ChucnangServiceImpl implements ChucnangService {
 
 	@Override
 	public void add(Chucnang chucnang) {
-		this.chucNangRepository.add(chucnang.getId(), chucnang.getName(),chucnang.getKey(), chucnang.getCreatday()
-				, chucnang.getCreatby(), chucnang.getUpdateday(), chucnang.getUpdateby()
-				,chucnang.getIsdelete(),chucnang.getChucnangcha().getId(), chucnang.getUrl());
+		this.chucNangRepository.save(chucnang);
 	}
 
 	@Override
-	public int update(Chucnang chucnang) {
-		return this.chucNangRepository.update(chucnang.getName(),chucnang.getKey(), chucnang.getUpdateday(), chucnang.getUpdateby()
-				, chucnang.getIsdelete(),chucnang.getChucnangcha().getId(), chucnang.getUrl(), chucnang.getId());
+	public void update(Chucnang chucnang) {
+		this.chucNangRepository.save(chucnang);
 	}
 
 	@Override

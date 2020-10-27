@@ -1,11 +1,8 @@
 package com.DuAnJV.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.models.Category;
@@ -19,14 +16,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void add(Category category) {
-		this.categoryRepository.add(category.getId(), category.getCategoryname(), category.getCategorykey()
-				, category.getCreatday(), category.getCreatby(), category.getUpdateday(), category.getUpdateby(),category.getIsdelete());
+		this.categoryRepository.save(category);
 	}
 
 	@Override
-	public int update(Category category) {
-		return this.categoryRepository.update(category.getCategoryname(), category.getCategorykey(), 
-				category.getUpdateday(), category.getUpdateby(), category.getIsdelete(), category.getId());
+	public void update(Category category) {
+		this.categoryRepository.save(category);
 	}
 
 	@Override

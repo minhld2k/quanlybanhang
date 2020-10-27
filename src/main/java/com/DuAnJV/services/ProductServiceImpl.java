@@ -19,18 +19,12 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void add(Product product) {
-		this.productRepository.add(product.getId(), product.getTensanpham(), product.getSoluong(), product.getGiatien()
-				, product.getRam(), product.getManhinh(), product.getTrangthai(), product.getCreatby(), product.getCreatday(),
-				product.getUpdateby(), product.getUpdateday(), product.getIsdelete(), product.getHangsx().getId()
-				, product.getCategory().getId(), product.getImage(), product.getMota());
+		this.productRepository.save(product);
 	}
 
 	@Override
 	public void update(Product product) {
-		this.productRepository.update(product.getTensanpham(), product.getSoluong(), product.getGiatien()
-				, product.getRam(), product.getManhinh(), product.getTrangthai(),
-				product.getUpdateby(), product.getUpdateday(), product.getIsdelete(), product.getHangsx().getId()
-				, product.getCategory().getId(), product.getImage(), product.getMota(),product.getId());
+		this.productRepository.save(product);
 	}
 
 	@Override

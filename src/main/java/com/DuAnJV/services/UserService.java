@@ -24,8 +24,6 @@ public interface UserService {
 
 	List<Long> findRoleById(Long id);
 
-	void deleteById(User user);
-
 	User findByEmail(String email);
 
 	long countByEmailsAndFullnameAndAddressAndGender(String fullname, String address, String email, List<Byte> gender);

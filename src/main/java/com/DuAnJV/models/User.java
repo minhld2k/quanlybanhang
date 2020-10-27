@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -15,13 +16,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "qtht_users")
 public class User {
 	
 	@Id
+    @GeneratedValue(generator = "bigid")
+    @GenericGenerator(name = "bigid",strategy = "com.DuAnJV.common.IDGenerator")
 	private Long id;
+	
 	@Column
 	private String email;
 	@Column

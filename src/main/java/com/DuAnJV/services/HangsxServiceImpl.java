@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.DuAnJV.models.Category;
 import com.DuAnJV.models.Hangsx;
 import com.DuAnJV.repositories.HangsxRepository;
 
@@ -16,26 +15,12 @@ public class HangsxServiceImpl implements HangsxService{
 
 	@Override
 	public void add(Hangsx hangsx) {
-		this.hangsxRepository.add(hangsx.getId(), hangsx.getName(), hangsx.getImage(), hangsx.getCreatday()
-				, hangsx.getCreatby(), hangsx.getUpdateday(), hangsx.getUpdateby(), hangsx.getIsdelete(), hangsx.getKey());
-		if (hangsx.getCategories() != null) {
-			for (Category category : hangsx.getCategories()) {
-				this.hangsxRepository.addCategory(category.getId(), hangsx.getId());
-			}
-		}
+		this.hangsxRepository.save(hangsx);
 	}
 
 	@Override
-	public int update(Hangsx hangsx) {
-		this.hangsxRepository.update(hangsx.getName(), hangsx.getImage(), hangsx.getUpdateday()
-				, hangsx.getUpdateby(), hangsx.getIsdelete(), hangsx.getKey(), hangsx.getId());
-		this.hangsxRepository.deleteCategory(hangsx.getId());
-		if (hangsx.getCategories() != null) {
-			for (Category category : hangsx.getCategories()) {
-				this.hangsxRepository.addCategory(category.getId(), hangsx.getId());
-			}
-		}
-		return 1;
+	public void update(Hangsx hangsx) {
+		this.hangsxRepository.save(hangsx);
 	}
 
 	@Override

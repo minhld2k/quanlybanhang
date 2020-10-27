@@ -13,7 +13,7 @@ public interface ChucnangService {
 
 	List<Chucnang> findByNameAndIsdelete(String roleName, Byte isDelete,Integer pagesize, Integer offset);
 
-	int update(Chucnang chucnang);
+	void update(Chucnang chucnang);
 
 	void add(Chucnang chucnang);
 

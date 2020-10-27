@@ -50,7 +50,11 @@ public class LoginController {
 			session.setAttribute("MENU", ls);
 			session.setAttribute("USERNAME", username);
 			session.setAttribute("USERLOGIN", user);
-			return "redirect:/user/list";
+			if (!replaceDemo.checkQuyen(user, "/user/list")) {
+				return "redirect:/user/oneUserCNS";
+			}else {
+				return "redirect:/user/list";
+			}
 		} else {
 			{
 				logger.error("Error: Tài khoản hoặc mật khẩu không chính xác");

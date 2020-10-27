@@ -1,16 +1,12 @@
 package com.DuAnJV.services;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import com.DuAnJV.models.Category;
 
 public interface CategoryService {
 
-	int update(Category category);
+	void update(Category category);
 
 	void add(Category category);
 
