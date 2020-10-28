@@ -3,6 +3,7 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.models.Role;
@@ -26,11 +27,13 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
+	@Cacheable(value = "findRoleByKey", key = "#key")
 	public Role findByRoleKeyAndIsDelete(String roleKey, Byte isDelete) {
 		return this.roleRepository.findByRolekeyAndIsdelete(roleKey, isDelete);
 	}
 
 	@Override
+	@Cacheable(value = "findAllRole", key = "#offset")
 	public List<Role> findByIsDelete(Integer pagesize,Integer offset) {
 		return this.roleRepository.findAll(pagesize,offset);
 	}
@@ -41,11 +44,13 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
+	@Cacheable(value = "findRoleById", key = "#id")
 	public Role findById(Long id) {
 		return this.roleRepository.findByid(id);
 	}
 
 	@Override
+	@Cacheable(value = "countAllRole")
 	public long count() {
 		return this.roleRepository.count();
 	}

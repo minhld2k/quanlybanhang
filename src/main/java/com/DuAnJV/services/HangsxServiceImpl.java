@@ -3,6 +3,7 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.models.Hangsx;
@@ -24,26 +25,31 @@ public class HangsxServiceImpl implements HangsxService{
 	}
 
 	@Override
+	@Cacheable(value = "findAllHangsx", key = "#offset")
 	public List<Hangsx> findAll(int limit, int offset) {
 		return this.hangsxRepository.findAll(limit, offset);
 	}
 
 	@Override
+	@Cacheable(value = "countAllHangsx")
 	public long countAll() {
 		return this.hangsxRepository.countAll();
 	}
 
 	@Override
+	@Cacheable(value = "findHangsxById", key = "#id")
 	public Hangsx findById(long id) {
 		return this.hangsxRepository.findById(id);
 	}
 
 	@Override
-	public Hangsx findByKey(String categorykey) {
-		return this.hangsxRepository.findByKey(categorykey);
+	@Cacheable(value = "findHangsxByKey", key = "#key")
+	public Hangsx findByKey(String key) {
+		return this.hangsxRepository.findByKey(key);
 	}
 
 	@Override
+	@Cacheable(value = "findCategoryByHangsxId", key = "#id")
 	public List<Long> findCategoryById(Long id) {
 		return this.hangsxRepository.findCategoryById(id);
 	}

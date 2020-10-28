@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.models.Chucnang;
@@ -31,21 +32,25 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
+	@Cacheable(value = "findByChucNangId",key = "#id")
 	public Optional<Chucnang> findById(Long id) {
 		return this.chucNangRepository.findById(id);
 	}
 
 	@Override
+	@Cacheable(value = "countAllCN")
 	public long count() {
 		return this.chucNangRepository.count();
 	}
 
 	@Override
+	@Cacheable(value = "findAllChucNangCha")
 	public List<Chucnang> findAllChucnangcha() {
 		return this.chucNangRepository.findAllChucnangcha();
 	}
 
 	@Override
+	@Cacheable(value = "findAllChucNang",key = "#offset")
 	public List<Chucnang> findAllChucnang(Integer pagesize, Integer offset) {
 		return this.chucNangRepository.findAll(pagesize, offset);
 	}
@@ -56,11 +61,13 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
+	@Cacheable(value = "countCN",key = "#id")
 	public long count(Long id) {
 		return this.chucNangRepository.count(id);
 	}
 
 	@Override
+	@Cacheable(value = "allKey")
 	public List<String> AllKey() {
 		return this.chucNangRepository.AllKey();
 	}
@@ -86,16 +93,19 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
+	@Cacheable(value = "findByCNKey",key = "#key")
 	public Chucnang findByKey(String key) {
 		return this.chucNangRepository.findByKey(key);
 	}
 
 	@Override
+	@Cacheable(value = "chucNangByEmail",key = "#email")
 	public List<Chucnang> findAllChucnangByEmail(String email) {
 		return this.chucNangRepository.findAllChucnangByEmail(email,email);
 	}
 
 	@Override
+	@Cacheable(value = "chucNangById",key = "#id")
 	public List<Chucnang> findAllChucNangByUserId(long id) {
 		return this.chucNangRepository.findAllChucNangByUserId(id);
 	}
