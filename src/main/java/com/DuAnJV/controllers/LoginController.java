@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -29,6 +30,9 @@ public class LoginController {
 
 	@Autowired
 	UserService userservice;
+	
+	@Autowired
+	CacheManager cacheManager;
 
 	@Autowired
 	ChucnangService chucnangService;
@@ -90,6 +94,15 @@ public class LoginController {
 		session.removeAttribute("MENU");
 		session.removeAttribute("USERNAME");
 		session.removeAttribute("USERLOGIN");
+		clearCache();
 		return "redirect:/loginadmin";
 	}
+	
+	// clear all cache using cache manager
+    @RequestMapping(value = "clearCache")
+	public void clearCache(){
+        for(String name:cacheManager.getCacheNames()){
+            cacheManager.getCache(name).clear();            // clear cache by name
+        }
+    }
 }

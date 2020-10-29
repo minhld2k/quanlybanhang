@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -32,25 +33,25 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
-	@Cacheable(value = "findByChucNangId",key = "#id")
+	@CachePut(value = "findByChucNangId",key = "#id")
 	public Optional<Chucnang> findById(Long id) {
 		return this.chucNangRepository.findById(id);
 	}
 
 	@Override
-	@Cacheable(value = "countAllCN")
+	@CachePut(value = "countAllCN")
 	public long count() {
 		return this.chucNangRepository.count();
 	}
 
 	@Override
-	@Cacheable(value = "findAllChucNangCha")
+	@CachePut(value = "findAllChucNangCha")
 	public List<Chucnang> findAllChucnangcha() {
 		return this.chucNangRepository.findAllChucnangcha();
 	}
 
 	@Override
-	@Cacheable(value = "findAllChucNang",key = "#offset")
+	@CachePut(value = "findAllChucNang",key = "#offset")
 	public List<Chucnang> findAllChucnang(Integer pagesize, Integer offset) {
 		return this.chucNangRepository.findAll(pagesize, offset);
 	}
@@ -61,7 +62,7 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
-	@Cacheable(value = "countCN",key = "#id")
+	@CachePut(value = "countCN",key = "#id")
 	public long count(Long id) {
 		return this.chucNangRepository.count(id);
 	}
@@ -93,7 +94,7 @@ public class ChucnangServiceImpl implements ChucnangService {
 	}
 
 	@Override
-	@Cacheable(value = "findByCNKey",key = "#key")
+	@CachePut(value = "findByCNKey",key = "#key")
 	public Chucnang findByKey(String key) {
 		return this.chucNangRepository.findByKey(key);
 	}

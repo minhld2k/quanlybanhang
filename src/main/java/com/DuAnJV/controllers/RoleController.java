@@ -187,7 +187,9 @@ public class RoleController {
 	public String update(@RequestParam("id") Long id, @RequestParam("rolekey") String rolekey,
 			@RequestParam("rolename") String rolename, HttpSession session,
 			@RequestParam(name = "chucnang[]") List<Long> chucnangid) {
-		Role role = new Role(id, rolekey, rolename);
+		Role role = this.roleService.findById(id);
+		role.setRolekey(rolekey);
+		role.setRolename(rolename);
 		List<Chucnang> ls = new ArrayList<Chucnang>();
 		for (Long long1 : chucnangid) {
 			ls.add(this.chucnangService.findById(long1).get());

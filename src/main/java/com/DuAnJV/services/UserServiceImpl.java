@@ -3,6 +3,7 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -34,43 +35,43 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Cacheable(value="findAllUser" , key = "#offset")
+	@CachePut(value="findAllUser" , key = "#offset")
 	public List<User> findAll(Integer pagesize, Integer offset) {
 		return this.userRepository.findAll(pagesize, offset);
 	}
 
 	@Override
-	@Cacheable(value="countAllUser")
+	@CachePut(value="countAllUser")
 	public long count() {
 		return this.userRepository.count();
 	}
 
 	@Override
-	@Cacheable(value="findUserById" , key = "#id")
+	@CachePut(value="findUserById" , key = "#id")
 	public User findById(Long id) {
 		return this.userRepository.findByid(id);
 	}
 
 	@Override
-	@Cacheable(value="findCNSByRole" , key = "#roleid")
+	@CachePut(value="findCNSByRole" , key = "#roleid")
 	public List<Long> findCNByRole(List<Long> roleid) {
 		return this.userRepository.findCNByRole(roleid);
 	}
 
 	@Override
-	@Cacheable(value="findCNSByUserId" , key = "#id")
+	@CachePut(value="findCNSByUserId" , key = "#id")
 	public List<Long> findCNSById(Long id) {
 		return this.userRepository.findCNSById(id);
 	}
 
 	@Override
-	@Cacheable(value="findRoleByUserId" , key = "#id")
+	@CachePut(value="findRoleByUserId" , key = "#id")
 	public List<Long> findRoleById(Long id) {
 		return this.userRepository.findRoleById(id);
 	}
 
 	@Override
-	@Cacheable(value="findByEmail" , key = "#email")
+	@CachePut(value="findByEmail" , key = "#email")
 	public User findByEmail(String email) {
 		return this.userRepository.findByEmail(email);
 	}

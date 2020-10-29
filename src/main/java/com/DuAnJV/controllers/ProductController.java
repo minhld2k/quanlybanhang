@@ -221,7 +221,7 @@ public class ProductController {
 				e.printStackTrace();
 			}
 		}
-		Product product1 = new Product(id, tensanpham,product.getSoluong(), product.getGiatien(),ram
+		Product product1 = new Product(product.getId(), tensanpham,product.getSoluong(), product.getGiatien(),ram
 				,manhinh, trangthai,imageDefault, mota);
 		product1.setIsdelete((byte) 0);
 		product1.setUpdateby((String) session.getAttribute("USERNAME"));

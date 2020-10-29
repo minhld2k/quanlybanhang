@@ -405,7 +405,13 @@ public class UserController {
 		if (birthday != null) {
 			date = replaceDemo.todate(birthday, "dd-MM-yyyy");
 		}
-		User user = new User(id, email, fullname, address, phone, date, gender);
+		User user = this.userService.findById(id);
+		user.setEmail(email);
+		user.setFullname(fullname);
+		user.setAddress(address);
+		user.setPhone(phone);
+		user.setBirthday(date);
+		user.setGender(gender);
 		List<Chucnang> ls = new ArrayList<>();
 		List<Role> lsrole = new ArrayList<>();
 		if (chucnangid != null) {

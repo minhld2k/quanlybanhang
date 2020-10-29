@@ -3,6 +3,7 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +27,19 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	@Cacheable(value = "findAllCategory", key = "#offset")
+	@CachePut(value = "findAllCategory", key = "#offset")
 	public List<Category> findAll(int limit, int offset) {
 		return this.categoryRepository.findAll(limit, offset);
 	}
 
 	@Override
-	@Cacheable(value = "countAllCategory")
+	@CachePut(value = "countAllCategory")
 	public long countAll() {
 		return this.categoryRepository.countAll();
 	}
 
 	@Override
-	@Cacheable(value = "findCategoryById", key = "#id")
+	@CachePut(value = "findCategoryById", key = "#id")
 	public Category findById(long id) {
 		return this.categoryRepository.findById(id);
 	}

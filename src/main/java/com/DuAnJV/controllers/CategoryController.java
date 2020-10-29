@@ -185,7 +185,9 @@ public class CategoryController {
 	public String update(@RequestParam("id") Long id, @RequestParam("categorykey") String categorykey,
 			@RequestParam("categoryname") String categoryname, HttpSession session) {
 		
-		Category category = new Category(id, categoryname, categorykey);
+		Category category = this.categoryService.findById(id);
+		category.setCategorykey(categorykey);
+		category.setCategoryname(categoryname);
 		category.setIsdelete((byte) 0);
 		category.setUpdateby((String) session.getAttribute("USERNAME"));
 		category.setUpdateday(new Timestamp(new Date().getTime()));

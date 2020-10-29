@@ -3,6 +3,7 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -29,19 +30,19 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	@Cacheable(value="findAllProduct" , key = "#offset")
+	@CachePut(value="findAllProduct" , key = "#offset")
 	public List<Product> findAll(Integer limit, Integer offset) {
 		return this.productRepository.findAll(limit, offset);
 	}
 
 	@Override
-	@Cacheable(value="countAllProduct")
+	@CachePut(value="countAllProduct")
 	public long countAll() {
 		return this.productRepository.countAll();
 	}
 
 	@Override
-	@Cacheable(value="findProductById" , key = "#id")
+	@CachePut(value="findProductById" , key = "#id")
 	public Product findById(long id) {
 		return this.productRepository.findById(id);
 	}

@@ -124,7 +124,10 @@ public class HangsxController {
 			lscate.add(this.categoryService.findById(l));
 		}
 		
-		Hangsx hagsx = new Hangsx(id, key, name, "", lscate);
+		Hangsx hagsx = this.hangsxService.findById(id);
+		hagsx.setName(name);
+		hagsx.setKey(key);
+		hagsx.setCategories(lscate);
 		hagsx.setIsdelete((byte) 0);
 		hagsx.setUpdateby((String) session.getAttribute("USERNAME"));
 		hagsx.setUpdateday(new Timestamp(new Date().getTime()));
