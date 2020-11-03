@@ -20,4 +20,10 @@ public interface ProductService {
 
 	long countAllProduct(String tensanpham, List<Long> category, List<Long> hangsx, List<Integer> trangthai);
 
+	List<Object[]> findProductByCategory(long categoryid, int limit, int offset);
+
+	List<Object[]> findProductHot(int limit, int offset);
+
+	List<Object[]> findProductNew(int limit, int offset);
+
 }

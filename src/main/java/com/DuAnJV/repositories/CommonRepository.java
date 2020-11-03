@@ -89,4 +89,94 @@ public class CommonRepository {
 		return _jdbcTemplate.queryForObject(str.toString(), Long.class);
 	}
 	
+	public List<Object[]> findProductNew(int limit, int offset){
+		List<Object[]> lsProduct = new ArrayList<>();
+		StringBuilder str = new StringBuilder();
+		str.append(" SELECT ")
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien ")
+		   .append(" FROM qlsp_products pro ")
+		   .append(" WHERE pro.isdelete = 0 AND pro.isproductnew = 1");
+		
+		str.append(" ORDER BY pro.creatday desc ");
+		if (limit > 0 && offset >0) {
+			str.append(" LIMIT "+limit+" OFFSET "+offset);
+		}else if(limit > 0 && offset < 0){
+			str.append(" LIMIT "+limit+" OFFSET 0");
+		}
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[5];
+			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[1] = map.get("image").toString();
+			objects[2] = map.get("tensanpham").toString();
+			objects[3] = map.get("soluong").toString();
+			objects[4] = map.get("giatien").toString();
+			lsProduct.add(objects);
+		}
+		
+		return lsProduct;
+	}
+	
+	public List<Object[]> findProductHot(int limit, int offset){
+		List<Object[]> lsProduct = new ArrayList<>();
+		StringBuilder str = new StringBuilder();
+		str.append(" SELECT ")
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien ")
+		   .append(" FROM qlsp_products pro ")
+		   .append(" WHERE pro.isdelete = 0 AND pro.isproducthot = 1");
+		
+		str.append(" ORDER BY pro.creatday desc ");
+		if (limit > 0 && offset >0) {
+			str.append(" LIMIT "+limit+" OFFSET "+offset);
+		}else if(limit > 0 && offset < 0){
+			str.append(" LIMIT "+limit+" OFFSET 0");
+		}
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[5];
+			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[1] = map.get("image").toString();
+			objects[2] = map.get("tensanpham").toString();
+			objects[3] = map.get("soluong").toString();
+			objects[4] = map.get("giatien").toString();
+			lsProduct.add(objects);
+		}
+		
+		return lsProduct;
+	}
+	
+	public List<Object[]> findProductByCategory(long categoryid, int limit, int offset){
+		List<Object[]> lsProduct = new ArrayList<>();
+		StringBuilder str = new StringBuilder();
+		str.append(" SELECT ")
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien ")
+		   .append(" FROM qlsp_products pro ")
+		   .append(" WHERE pro.isdelete = 0 ");
+		if (categoryid > 0) {
+			str.append(" AND pro.categoryid = "+ categoryid);
+		}
+		
+		str.append(" ORDER BY pro.creatday desc ");
+		if (limit > 0 && offset >0) {
+			str.append(" LIMIT "+limit+" OFFSET "+offset);
+		}else if(limit > 0 && offset < 0){
+			str.append(" LIMIT "+limit+" OFFSET 0");
+		}
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[5];
+			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[1] = map.get("image").toString();
+			objects[2] = map.get("tensanpham").toString();
+			objects[3] = map.get("soluong").toString();
+			objects[4] = map.get("giatien").toString();
+			lsProduct.add(objects);
+		}
+		
+		return lsProduct;
+	}
+	
 }

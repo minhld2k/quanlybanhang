@@ -3,8 +3,6 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.models.Product;
@@ -30,19 +28,16 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	@CachePut(value="findAllProduct" , key = "#offset")
 	public List<Product> findAll(Integer limit, Integer offset) {
 		return this.productRepository.findAll(limit, offset);
 	}
 
 	@Override
-	@CachePut(value="countAllProduct")
 	public long countAll() {
 		return this.productRepository.countAll();
 	}
 
 	@Override
-	@CachePut(value="findProductById" , key = "#id")
 	public Product findById(long id) {
 		return this.productRepository.findById(id);
 	}
@@ -57,5 +52,22 @@ public class ProductServiceImpl implements ProductService{
 	public long countAllProduct(String tensanpham, List<Long> category, List<Long> hangsx, List<Integer> trangthai) {
 		return this.com.countAllProduct(tensanpham, category, hangsx, trangthai);
 	}
+
+	@Override
+	public List<Object[]> findProductNew(int limit, int offset) {
+		return this.com.findProductNew(limit, offset);
+	}
+
+	@Override
+	public List<Object[]> findProductHot(int limit, int offset) {
+		return this.com.findProductHot(limit, offset);
+	}
+
+	@Override
+	public List<Object[]> findProductByCategory(long categoryid, int limit, int offset) {
+		return this.com.findProductByCategory(categoryid, limit, offset);
+	}
+	
+	
 	
 }
