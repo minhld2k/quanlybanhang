@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.DuAnJV.common.replaceDemo;
 import com.DuAnJV.models.Chucnang;
+import com.DuAnJV.models.Customer;
 import com.DuAnJV.models.User;
 import com.DuAnJV.services.ChucnangService;
+import com.DuAnJV.services.CustomerService;
 import com.DuAnJV.services.UserService;
 
 @Controller
@@ -37,11 +39,19 @@ public class LoginController {
 	@Autowired
 	ChucnangService chucnangService;
 	
+	@Autowired
+	CustomerService customerService;
+	
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@RequestMapping("/loginadmin")
-	public String showLogin(HttpServletRequest request,HttpSession session) {
+	public String showLoginAdmin(HttpServletRequest request,HttpSession session) {
 		return "loginadmin";
+	}
+	
+	@RequestMapping("/login")
+	public String showLogin(HttpServletRequest request,HttpSession session) {
+		return "trangchu/login";
 	}
 
 	@PostMapping("/checkLogin")
@@ -54,6 +64,7 @@ public class LoginController {
 			session.setAttribute("MENU", ls);
 			session.setAttribute("USERNAME", username);
 			session.setAttribute("USERLOGIN", user);
+			session.removeAttribute("ERROR");
 			if (!replaceDemo.checkQuyen(user, "/user/list")) {
 				return "redirect:/user/oneUserCNS";
 			}else {
@@ -68,6 +79,21 @@ public class LoginController {
 		}
 	}
 	
+	@PostMapping("/checkLoginHome")
+	public String checkLoginHome(@RequestParam("username") String username, @RequestParam("password") String password,
+			ModelMap model, HttpSession session) {
+		if (this.customerService.checkLogin(username, password)) {
+			logger.info("login success with email "+ username);
+			Customer cus = this.customerService.findByEmail(username);
+			session.setAttribute("UserHome", cus);
+			session.removeAttribute("ERROR");
+			return "redirect:/";
+		} else {
+			logger.error("Error: Tài khoản hoặc mật khẩu không chính xác");
+			session.setAttribute("ERROR", "Tài khoản hoặc mật khẩu không chính xác");
+			return "redirect:/login";
+		}
+	}
 	
 	@GetMapping(value = "/check", produces = "application/json")
 	@ResponseBody
@@ -105,4 +131,5 @@ public class LoginController {
             cacheManager.getCache(name).clear();            // clear cache by name
         }
     }
+    
 }

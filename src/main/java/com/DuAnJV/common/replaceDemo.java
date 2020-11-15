@@ -162,6 +162,10 @@ public class replaceDemo {
     	String str = ls.toString();
     	return str.substring(1, str.length()-1);
     }
-
+    
+    public static String convertFromListByteToString(List<Byte> ls) {
+    	String str = ls.toString();
+    	return str.substring(1, str.length()-1);
+    }
 
 }

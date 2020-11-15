@@ -372,7 +372,7 @@ public class UserController {
 		}
 
 		User user = new User(id, email, fullname, address, phone, date, gender);
-		user.setPassword(password);
+		user.setPassword(replaceDemo.getBcrypt(password));
 		List<Chucnang> ls = new ArrayList<>();
 		List<Role> lsrole = new ArrayList<>();
 		if (chucnangid != null) {

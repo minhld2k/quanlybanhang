@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+</head>
+<body>
+	<article layout:fragment="content-admin">
+		<div class="container" style="padding: 0px; margin: -20px 0 20px 0;">
+			<div class="col-sm-12">
+
+				<h2 th:text="${TITLE}"></h2>
+				<form action="/customer/save" th:object="${CUSTOMER}" method="post">
+
+					<div class="form-group">
+						<input type="hidden" class="form-control" th:field="*{id}"  name="id" id="id" value="">
+					</div>
+					
+					<div class="form-group">
+						<label for="email" class="col-form-label">Email <strong>*</strong></label> 
+						<input type="text" class="form-control" th:field="*{email}" id="email" name="email">
+					</div>
+					<p id="errorEmail" style="color: red"></p>
+
+					<div class="form-group">
+						<label for="password" class="col-form-label">Mật khẩu </label> 
+						<input type="password" class="form-control" id="password" name="password">
+					</div>
+					<p id="errorPassword" style="color: red"></p>
+					
+					<div class="form-group">
+						<label for="password" class="col-form-label">Xác nhận mật khẩu </label> 
+						<input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+					</div>
+					<p id="errorConfirmPassword" style="color: red"></p>
+
+					<div class="form-group">
+						<label for="fullname" class="col-form-label">Họ và tên <strong>*</strong></label> <input
+							type="text" th:field="*{fullname}" class="form-control" id="fullname" name="fullname">
+					</div>
+					<p id="errorFullname" style="color: red"></p>
+
+					<div class="form-group">
+						<label for="phone" class="col-form-label">Điện thoại</label> <input
+							type="text" th:field="*{phone}" class="form-control" id="phone" name="phone">
+					</div>
+					<p id="errorPhone" style="color: red"></p>
+
+					<div class="form-group">
+						<label for="birthday" class="col-form-label">Ngày sinh</label> <input
+							type="text" class="form-control" th:field="*{birthday}" id="birthday" name="birthday" placeholder="dd-MM-yyyy">
+					</div>
+					<p id="errorBirthday" style="color: red"></p>
+
+					<div class="form-group">
+						<label>Giới tính <strong>*</strong></label>
+						<div class="form-check form-check-inline">
+							<!--value = 1 => Nu| 2 =>Nam|3 =>Ko xac dinh -->
+							<label class="form-check-label" style="margin-right: 20px;"> 
+								<input class="form-check-input" type="radio" th:field="*{gender}" name="gender" value="1" id="gender"> Nam
+							</label> 
+							<label class="form-check-label" style="margin-right: 20px;"> 
+								<input class="form-check-input" type="radio" th:field="*{gender}" name="gender" value="2" id="gender"> Nữ
+							</label>
+							<label class="form-check-label"> 
+								<input class="form-check-input" type="radio" th:field="*{gender}" name="gender" value="3" id="gender"> Ko xác định
+							</label>
+						</div>
+					</div>
+					<p id="errorGender" style="color: red"></p>
+					
+					<div class="form-group">
+						<label for="address" class="col-form-label">Địa chỉ</label> 
+						<textarea class="form-control" rows="2" th:field="*{address}" name="address" id="address"></textarea>
+					</div>
+					<p id="errorAddress" style="color: red"></p>
+					
+					<button type="submit" class="btn btn-primary" th:text="${button}"></button>
+				</form>
+			</div>
+		</div>
+	</article>
+</body>
+
+</html>
+

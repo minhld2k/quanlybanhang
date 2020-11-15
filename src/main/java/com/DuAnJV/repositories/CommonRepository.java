@@ -48,7 +48,7 @@ public class CommonRepository {
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
 		for (Map<String, Object> map : rows) {
 			Object[] objects = new Object[10];
-			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[0] = Long.parseLong(map.get("id").toString());
 			objects[1] = map.get("image").toString();
 			objects[2] = map.get("tensanpham").toString();
 			objects[3] = map.get("soluong").toString();
@@ -107,7 +107,7 @@ public class CommonRepository {
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
 		for (Map<String, Object> map : rows) {
 			Object[] objects = new Object[5];
-			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[0] = Long.parseLong(map.get("id").toString());
 			objects[1] = map.get("image").toString();
 			objects[2] = map.get("tensanpham").toString();
 			objects[3] = map.get("soluong").toString();
@@ -136,7 +136,7 @@ public class CommonRepository {
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
 		for (Map<String, Object> map : rows) {
 			Object[] objects = new Object[5];
-			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[0] = Long.parseLong(map.get("id").toString());
 			objects[1] = map.get("image").toString();
 			objects[2] = map.get("tensanpham").toString();
 			objects[3] = map.get("soluong").toString();
@@ -147,28 +147,27 @@ public class CommonRepository {
 		return lsProduct;
 	}
 	
-	public List<Object[]> findProductByCategory(long categoryid, int limit, int offset){
+	public List<Object[]> findProductByCategory(String categorykey, int limit, int offset){
 		List<Object[]> lsProduct = new ArrayList<>();
 		StringBuilder str = new StringBuilder();
 		str.append(" SELECT ")
-		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien ")
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien,pro.mota ")
 		   .append(" FROM qlsp_products pro ")
+		   .append("	INNER JOIN qtht_categories ct ON ct.id = pro.categoryid ")
 		   .append(" WHERE pro.isdelete = 0 ");
-		if (categoryid > 0) {
-			str.append(" AND pro.categoryid = "+ categoryid);
+		if (!categorykey.isEmpty()) {
+			str.append(" AND ct.categorykey = '"+categorykey+"' ");
 		}
 		
 		str.append(" ORDER BY pro.creatday desc ");
-		if (limit > 0 && offset >0) {
+		if (limit > 0) {
 			str.append(" LIMIT "+limit+" OFFSET "+offset);
-		}else if(limit > 0 && offset < 0){
-			str.append(" LIMIT "+limit+" OFFSET 0");
 		}
 		
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
 		for (Map<String, Object> map : rows) {
 			Object[] objects = new Object[5];
-			objects[0] = Integer.parseInt(map.get("id").toString());
+			objects[0] = Long.parseLong(map.get("id").toString());
 			objects[1] = map.get("image").toString();
 			objects[2] = map.get("tensanpham").toString();
 			objects[3] = map.get("soluong").toString();
@@ -176,7 +175,48 @@ public class CommonRepository {
 			lsProduct.add(objects);
 		}
 		
+		System.out.println("sql: "+str.toString());
+		
 		return lsProduct;
+	}
+	
+	public List<Object[]> findAllCustomer(String email,String name,String address,List<Byte> gender,int limit,int offset){
+		List<Object[]> lsCus = new ArrayList<>();
+		StringBuilder sql = new StringBuilder(" SELECT id,email,fullname,address,gender,phone,birthday FROM qtht_customers");
+		sql.append(" WHERE isdelete = 0 ");
+		if (!name.isEmpty()) {
+			sql.append(" AND to_tsquery('"+name+"') @@ pro.fulltext_ ");
+		}
+		if (!address.isEmpty()) {
+			sql.append(" AND to_tsquery('"+address+"') @@ pro.fulltext1_ ");
+		}
+		if (!email.isEmpty()) {
+			sql.append(" AND email like '%"+email+"%' ");
+		}
+		if (gender != null) {
+			sql.append(" AND gender IN ("+replaceDemo.convertFromListByteToString(gender)+") ");
+		}
+		if (limit > 0) {
+			sql.append(" LIMIT "+limit+" OFFSET "+offset);
+		}
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(sql.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[7];
+			objects[0] = Long.parseLong(map.get("id").toString());
+			objects[1] = map.get("email").toString();
+			objects[2] = map.get("fullname").toString();
+			objects[3] = map.get("address").toString();
+			objects[4] = Integer.parseInt(map.get("gender").toString());
+			objects[5] = map.get("phone").toString();
+			objects[6] = map.get("birthday") == null  ? "" : map.get("birthday").toString();
+			lsCus.add(objects);
+		}
+		
+		System.out.println(sql.toString());
+		
+		return lsCus;
+		
 	}
 	
 }

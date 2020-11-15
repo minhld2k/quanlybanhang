@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<Object[]> findProductByCategory(long categoryid, int limit, int offset) {
+	public List<Object[]> findProductByCategory(String categoryid, int limit, int offset) {
 		return this.com.findProductByCategory(categoryid, limit, offset);
 	}
 	

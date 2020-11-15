@@ -1,0 +1,86 @@
+
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Online Shop</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0">
+<script th:src="@{/js/jsHome/popper.min.js}"></script>
+<link th:href="@{/css/cssHome/style.css}" rel="stylesheet" type="text/css" media="all" />
+<script th:src="@{/js/jsHome/jquery.min.js}"></script>
+<link th:href="@{/css/cssHome/bootstrap.min.css}" rel="stylesheet" />
+<script th:src="@{/js/jsHome/bootstrap.min.js}"></script>
+</head>
+<style layout:fragment="style">
+			
+</style>
+<body>
+	<div class="wrap">
+		<div class="header">
+			<div class="header_top" style="background-color: #e6e7e2">
+				<div class="logo">
+					<a href="index.html"><img src="/images/logo-shop.jpg" alt="" /></a>
+				</div>
+				<div class="search_box">
+					<form>
+						<input type="text" value="Search" onfocus="this.value = '';"
+							onblur="if (this.value == '') {this.value = 'Search';}"><input
+							type="submit" value="">
+					</form>
+				</div>
+				<button class="btn-cart" type="button">
+					<span class="glyphicon glyphicon-shopping-cart"></span> Giỏ hàng
+				</button>
+				<div class="clear"></div>
+			</div>
+			<div class="header_bottom">
+				<div class="menu">
+		     		<ul>
+		     			<th:block th:each="item: ${Categorys}">
+				    		<li><a th:href="@{|/${item.categorykey}|}" th:text="${item.categoryname}"></a></li>
+				    	</th:block>
+	     			</ul>
+		     	</div>
+		     	
+		     	<div class="menu" style="float: right;">
+	     			<ul>
+						<li class="dropdown">
+							<th:block th:if="${null== session.UserHome}">
+								<a href="/login">Đăng nhập</a>
+							</th:block>
+							
+							<th:block th:unless="${null== session.UserHome}">
+								<a href="/customer/edit" class="dropdown-toggle" th:text="${session.UserHome.fullname}"></a>
+								<ul class="dropdown-menu">
+									<li><a href="/customer/edit">Trang cá nhân</a></li>
+									<li><a th:href="@{/logoutHome}">Đăng xuất</a></li>
+								</ul>
+							</th:block>
+						</li>
+						
+					</ul>
+		     	</div>
+				<div class="clear"></div>
+			</div>
+			<div class="header_slide" layout:fragment="slide-home">
+			
+			</div>
+		</div>
+		<div class="main" layout:fragment="content-home">
+			
+		</div>
+	</div>
+	<div class="footer">
+		<div class="copy_right">
+			<p>
+				&copy; 2020 online shop.Thiết kế: Lê Dương Minh</a>
+			</p>
+		</div>
+	</div>
+	
+	<a href="#" id="toTop"><span id="toTopHover"> </span></a>
+</body>
+</html>
+
