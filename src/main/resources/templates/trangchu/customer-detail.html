@@ -1,19 +1,26 @@
 
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JSP Page</title>
 <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/customer.js}"></script>
+<style layout:fragment="style">
+strong {
+	color: red;
+}
+
+</style>
 </head>
 <body>
-	<article layout:fragment="content-admin">
-		<div class="container" style="padding: 0px; margin: -20px 0 20px 0;">
+	<div class="main" layout:fragment="content-home">
+		<div class="container" style="padding: 0px; margin: 0px;">
 			<div class="col-sm-12">
 
 				<h2 th:text="${TITLE}"></h2>
-				<form action="/customer/save" th:object="${CUSTOMER}" method="post">
+				<form action="/customer/save" th:object="${CUSTOMER}" method="post" onsubmit="return formValidation()">
 
 					<div class="form-group">
 						<input type="hidden" class="form-control" th:field="*{id}"  name="id" id="id" value="">
@@ -47,7 +54,6 @@
 						<label for="phone" class="col-form-label">Điện thoại</label> <input
 							type="text" th:field="*{phone}" class="form-control" id="phone" name="phone">
 					</div>
-					<p id="errorPhone" style="color: red"></p>
 
 					<div class="form-group">
 						<label for="birthday" class="col-form-label">Ngày sinh</label> <input
@@ -56,7 +62,7 @@
 					<p id="errorBirthday" style="color: red"></p>
 
 					<div class="form-group">
-						<label>Giới tính <strong>*</strong></label>
+						<label>Giới tính <strong>*</strong></label><br>
 						<div class="form-check form-check-inline">
 							<!--value = 1 => Nu| 2 =>Nam|3 =>Ko xac dinh -->
 							<label class="form-check-label" style="margin-right: 20px;"> 
@@ -76,13 +82,12 @@
 						<label for="address" class="col-form-label">Địa chỉ</label> 
 						<textarea class="form-control" rows="2" th:field="*{address}" name="address" id="address"></textarea>
 					</div>
-					<p id="errorAddress" style="color: red"></p>
 					
 					<button type="submit" class="btn btn-primary" th:text="${button}"></button>
 				</form>
 			</div>
 		</div>
-	</article>
+	</div>
 </body>
 
 </html>

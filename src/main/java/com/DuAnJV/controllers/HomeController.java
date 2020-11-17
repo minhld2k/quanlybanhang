@@ -75,14 +75,14 @@ public class HomeController {
 			model.addAttribute("lsProByCate",this.productService.findProductByCategory(categorykey, pageSize, (pageNumber - 1) * pageSize));
 
 		}
-		session.setAttribute("COUNT", count);
-    	
-    	return "view-product-cate";
+		session.setAttribute("CountProByCate", count);
+    	session.setAttribute("Title", this.categoryService.findByKey(categorykey).getCategoryname());
+    	return "trangchu/view-product-cate";
     }
     
     @GetMapping(value = "/detail/{id}")
-    public String productDetail( @PathVariable(name = "id")long id,ModelMap model) {
-    	model.addAttribute("ProductDetail",this.productService.findById(id));
+    public String productDetail( @PathVariable(name = "id")long id,HttpSession session) {
+    	session.setAttribute("ProductDetail",this.productService.findById(id));
     	return "trangchu/preview";
     }
     @RequestMapping("/preview")

@@ -18,12 +18,15 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.DuAnJV.dto.GioHangDTO;
 import com.DuAnJV.models.Chucnang;
+import com.DuAnJV.models.Giohang;
 import com.DuAnJV.models.User;
 
 public class replaceDemo {
 
 	public static Map<String, String> mapFromFile = new HashMap<String, String>();
+	public static Map<Integer, String> mapTrangThai = new HashMap<Integer, String>();
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 //		System.out.println("=>"+replace("sam sung"));
@@ -132,11 +135,14 @@ public class replaceDemo {
     }
     public static Date todate(String date,String...pa){
         try {
+        	
             if (pa.length > 0) {
                 date_format.applyPattern(pa[0]);
             }
             if (null == date || "".equals(date)) {
 				return null;
+			}else {
+				date = date.replace("/", "-");
 			}
             return date_format.parse(date);
         } catch (ParseException ex) {
@@ -166,6 +172,34 @@ public class replaceDemo {
     public static String convertFromListByteToString(List<Byte> ls) {
     	String str = ls.toString();
     	return str.substring(1, str.length()-1);
+    }
+    
+    public static String getTrangThai(int trangthai) {
+    	if (mapTrangThai.size() == 0) {
+    		mapTrangThai.put(0, "Chưa thanh toán");
+        	mapTrangThai.put(1, "Đang xử lý");
+        	mapTrangThai.put(2, "Đã xử lý");
+        	mapTrangThai.put(3, "Chờ giao hàng");
+        	mapTrangThai.put(4, "Đã thanh toán");
+		}
+    	return mapTrangThai.get(trangthai);
+    }
+    
+    public static List<GioHangDTO> converttoDTO(List<Giohang> ls){
+    	List<GioHangDTO> lsDto = new ArrayList<>();
+    	for (Giohang gh : ls) {
+			GioHangDTO ghdto = new GioHangDTO(gh.getId(), gh.getSoluong(), getTrangThai(gh.getTrangthai()), gh.getNgayadd(), gh.getProduct(), gh.getCustomer());
+			lsDto.add(ghdto);
+    	}
+    	return lsDto;
+    }
+    
+    public static double SUM(List<Giohang> ls) {
+    	double sum = 0;
+    	for (Giohang giohang : ls) {
+			sum = sum + giohang.getSoluong() * giohang.getProduct().getGiatien();
+		}
+    	return sum;
     }
 
 }

@@ -40,9 +40,6 @@ public class CustomerController {
 		} else {
 			session.setAttribute("PAGESIZE", pagesize);
 		}
-		if (session.getAttribute("KEYWORD") != null) {
-			return "redirect:/user/search";
-		}
 		return "redirect:/customer/list";
 	}
 	
@@ -202,7 +199,8 @@ public class CustomerController {
 	
 	@RequestMapping("/edit")
 	public String edit(ModelMap model, HttpSession session) {
-		Customer cus = (Customer) session.getAttribute("UserHome");
+		Customer cusLogin = (Customer) session.getAttribute("UserHome");
+		Customer cus = this.customerService.findByEmail(cusLogin.getEmail());
 		String birthday =  replaceDemo.toString(cus.getBirthday(), "dd-MM-yyyy");
 		cus.setBirthday(replaceDemo.todate(birthday, "dd-MM-yyyy"));
 		model.addAttribute("CUSTOMER",cus);

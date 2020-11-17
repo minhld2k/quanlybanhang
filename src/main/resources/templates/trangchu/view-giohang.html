@@ -1,0 +1,93 @@
+
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<head>
+<title>Online Shop</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script th:src="@{/js/jsHome/home.js}"></script>
+</head>
+<body>
+	<div class="main" layout:fragment="content-home">
+		<div class="container" style="max-width: 100%;padding: 0px;">
+			<div class="row"
+				style="background-color: darkgrey; padding: 0; margin: 0;">
+				<div class="col-sm-6">
+					<h3 style="padding: 0; margin-top: 10px;">Giỏ hàng của tôi</h3>
+				</div>
+				<div class="col-sm-6" style="padding: 0; margin-top: 5px;">
+					<button type="button" class="btn btn-danger deleteButton"
+						style="float: right; margin-left: 10px; margin-right: 10px;">
+						<span class="glyphicon glyphicon-trash"></span>Xóa
+					</button>
+				</div>
+			</div>
+			
+			<th:block th:if="${null == GIOHANGS}">
+				<h3 style="text-align: center;" th:text="${session.MesListGioHang}"></h3>
+			</th:block>
+			<th:block th:unless="${null == GIOHANGS}">
+				<form th:action="@{/giohang/deleteAll}" method="get" id="formDelete">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th><input id="selectAll" type="checkbox"></th>
+								<th>Hình ảnh</th>
+								<th>Tên sản phẩm</th>
+								<th>Số lượng</th>
+								<th>Giá tiền</th>
+								<th>Thành tiền</th>
+								<th>Trạng thái</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="item: ${GIOHANGS}">
+								<td><input type="checkbox" name="id[]"
+									th:value="${item.id}"></td>
+								<td width="100"><img alt=""
+									th:src="@{'/getimage/'+ ${item.product.image}}" width="80" height="70"></td>
+								<td th:text="${item.product.tensanpham}"></td>
+								<td><input type="number" min="1" th:value="${item.soluong}" th:id="soluong+${item.id}"
+										th:onchange="|update(${item.id})|" /></td>
+								<td th:text="${item.product.giatien}"></td>
+								<td th:text="${item.product.giatien * item.soluong}"></td>
+								<td th:text="${item.trangthai}"></td>
+							</tr>
+							<tr>
+								<td colspan="5" style="font-weight: bold; text-align: right;">Tổng
+									tiền:</td>
+								<td class="sum" style="font-weight: bold;" th:text="${session.SUM}"></td>
+								<td><a class="btn btn-primary btn-sm" href="/carts/">Thanh toán</a></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+			</th:block>
+		</div>
+		<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Thông báo</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Bạn có muốn xóa những hàng đã chọn ko</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="deleteId">Xóa</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

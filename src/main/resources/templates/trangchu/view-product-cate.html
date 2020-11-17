@@ -54,30 +54,25 @@
 		<div class="content">
 			<div class="content_top">
 				<div class="heading">
-					<h3>Sản phẩm mới</h3>
-				</div>
-				<div class="see">
-					<p>
-						<a href="#">Xem tất cả</a>
-					</p>
+					<h3 th:text="${session.Title} + ' ( '+${session.CountProByCate}+' )'"></h3>
 				</div>
 				<div class="clear"></div>
 			</div>
 			<div class="section group">
-				<th:block th:each="productsnew : ${session.PRODUCTSNEW}">
+				<th:block th:each="product : ${lsProByCate}">
 					<div class="grid_1_of_4 images_1_of_4">
-						<a th:href="@{'/detail/' + ${productsnew[0].toString()}}"><img th:src="@{'/getimage/'+ ${productsnew[1].toString()}}"
+						<a th:href="@{'/detail/' + ${product[0].toString()}}"><img th:src="@{'/getimage/'+ ${product[1].toString()}}"
 							alt="" /></a>
-						<h2 th:text="${productsnew[2].toString()}"></h2>
+						<h2 th:text="${product[2].toString()}"></h2>
 						<div class="price-details">
 							<div class="price-number">
 								<p>
-									<span class="rupees" th:text="${productsnew[4].toString()}"></span>
+									<span class="rupees" th:text="${product[4].toString()}"></span>
 								</p>
 							</div>
 							<div class="add-cart">
 								<h4>
-									<a th:href="@{'/detail/' + ${productsnew[0].toString()}}">Mua ngay</a>
+									<a th:href="@{'/detail/' + ${product[0].toString()}}">Mua ngay</a>
 								</h4>
 							</div>
 							<div class="clear"></div>
@@ -85,41 +80,7 @@
 					</div>
 				</th:block>
 			</div>
-			<th:block th:each="category : ${Categorys}">
-				<div class="content_bottom">
-					<div class="heading">
-						<h3 th:text='${category.categoryname + "nổi bật"}'></h3>
-					</div>
-					<div class="see">
-						<p>
-							<a th:href="@{'/'+${category.categorykey}}">Xem tất cả</a>
-						</p>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="section group" >
-					<th:block th:each="productBykey : ${category.lsProduct}">
-						<div class="grid_1_of_4 images_1_of_4">
-							<a th:href="@{'/detail/' + ${productBykey[0].toString()}}"><img th:src="@{'/getimage/'+ ${productBykey[1].toString()}}"
-								alt="" /></a>
-							<h2 th:text="${productBykey[2].toString()}"></h2>
-							<div class="price-details">
-								<div class="price-number">
-									<p>
-										<span class="rupees" th:text="${productBykey[4].toString()}"></span>
-									</p>
-								</div>
-								<div class="add-cart">
-									<h4>
-										<a th:href="@{'/detail/' + ${productBykey[0].toString()}}">Mua ngay</a>
-									</h4>
-								</div>
-								<div class="clear"></div>
-							</div>
-						</div>
-					</th:block>
-				</div>
-			</th:block>
+			
 		</div>
 	</div>
 </body>
