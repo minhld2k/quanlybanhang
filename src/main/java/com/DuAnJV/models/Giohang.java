@@ -41,12 +41,15 @@ public class Giohang {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customerid")
 	private Customer customer;
+	
+	@Column
+	private Double giatien;
 
 	public Giohang() {
 		super();
 	}
 
-	public Giohang(Long id, Integer soluong, Integer trangthai, Date ngayadd, Product product, Customer customer) {
+	public Giohang(Long id, Integer soluong, Integer trangthai, Date ngayadd, Product product, Customer customer,Double giatien) {
 		super();
 		this.id = id;
 		this.soluong = soluong;
@@ -54,6 +57,7 @@ public class Giohang {
 		this.ngayadd = ngayadd;
 		this.product = product;
 		this.customer = customer;
+		this.giatien = giatien;
 	}
 
 	public Long getId() {
@@ -102,6 +106,14 @@ public class Giohang {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public Double getGiatien() {
+		return giatien;
+	}
+
+	public void setGiatien(Double giatien) {
+		this.giatien = giatien;
 	}
 	
 }

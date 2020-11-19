@@ -50,15 +50,16 @@
 								<td th:text="${item.product.tensanpham}"></td>
 								<td><input type="number" min="1" th:value="${item.soluong}" th:id="soluong+${item.id}"
 										th:onchange="|update(${item.id})|" /></td>
-								<td th:text="${item.product.giatien}"></td>
-								<td th:text="${item.product.giatien * item.soluong}"></td>
+								<input type="hidden" th:id="giatien+${item.id}" th:value="${item.giatien}" />
+								<td th:text="${item.giatien}"></td>
+								<td th:class="thanhtien+${item.id}" th:text="${item.giatien * item.soluong}"></td>
 								<td th:text="${item.trangthai}"></td>
 							</tr>
 							<tr>
 								<td colspan="5" style="font-weight: bold; text-align: right;">Tổng
 									tiền:</td>
 								<td class="sum" style="font-weight: bold;" th:text="${session.SUM}"></td>
-								<td><a class="btn btn-primary btn-sm" href="/carts/">Thanh toán</a></td>
+								<td><a class="btn btn-primary btn-sm" href="/cart/add">Thanh toán</a></td>
 							</tr>
 
 						</tbody>

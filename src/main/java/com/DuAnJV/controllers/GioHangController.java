@@ -75,6 +75,7 @@ public class GioHangController {
 				giohang.setCustomer(customer);
 				giohang.setSoluong(soluong);
 				giohang.setTrangthai(0);
+				giohang.setGiatien(product.getGiatien());
 			}else {
 				giohang = this.gioHangService.findById(id);
 				giohang.setSoluong(soluong);

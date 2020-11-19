@@ -38,7 +38,7 @@
 			<div class="header_bottom">
 				<div class="menu">
 		     		<ul>
-		     			<th:block th:each="item: ${Categorys}">
+		     			<th:block th:each="item: ${session.MENUHOME}">
 				    		<li><a th:href="@{|/${item.categorykey}|}" th:text="${item.categoryname}"></a></li>
 				    	</th:block>
 	     			</ul>

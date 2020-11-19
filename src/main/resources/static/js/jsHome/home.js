@@ -45,6 +45,8 @@ $(document).ready(function() {
 });
 function update(id){
 	var soluong = $("#soluong"+id).val();
+	var giatien = $("#giatien"+id).val();
+	var thanhtien = soluong * giatien;
 	$.ajax({
 		type : "GET",
 		contentType : "application/json",
@@ -58,6 +60,37 @@ function update(id){
 		timeout : 10000,
 		success : function(data) {
 			$(".sum").html(data);
+			$(".thanhtien"+id).html(thanhtien);
 		},
 	});
+}
+
+function formValidation(){
+	var fullname = $('#fullname').val();
+	var phone = $('#phone').val();
+	var address = $('#address').val();
+	if (fullname == "") {
+		$('#errorFullname').show();
+		$('#errorFullname').text("Vui lòng nhập họ và tên");
+		return false;
+	}else{
+		$('#errorFullname').hide();
+	}
+
+	if (phone == "") {
+		$('#errorPhone').show();
+		$('#errorPhone').text("Vui lòng nhập số điện thoại");
+		return false;
+	} else {
+		$('#errorPhone').hide();
+	}
+	
+	if (address == "") {
+		$('#errorAddress').show();
+		$('#errorAddress').text("Vui lòng nhập địa chỉ");
+		return false;
+	} else {
+		$('#errorAddress').hide();
+	}
+	return true;
 }

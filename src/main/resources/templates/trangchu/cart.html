@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+<head>
+<title>Online Shop</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script th:src="@{/js/jsHome/home.js}"></script>
+</head>
+<body>
+	<div class="main" layout:fragment="content-home">
+		<div class="row">
+			<div class="col-sm-8">
+				<form action="/cart/save" method="post" th:object="${USERHOME}" onsubmit="return formValidation()">
+					<div class="form-group">
+						<label>Họ và tên <strong>*</strong></label> 
+						<input type="text" class="form-control" th:field="*{fullname}" 
+							name="name" placeholder="Nhập họ và tên" id="name" value="">
+					</div>
+					<p id="errorFullname" style="color: red"></p>
+					
+					<div class="form-group">
+						<label>Số điện thoại <strong>*</strong></label> 
+						<input type="text" class="form-control" th:field="*{phone}" 
+							name="phone" placeholder="Nhập số điện thoại" id="phone" value="">
+					</div>
+					<p id="errorPhone" style="color: red"></p>
+	
+					<div class="form-group">
+						<label>Địa chỉ giao hàng <strong>*</strong></label> <input type="text"
+							class="form-control" th:field="*{address}" name="address"
+							placeholder="Nhập địa chỉ giao hàng" id="status" value="">
+					</div>
+					<p id="errorAddress" style="color: red"></p>
+					
+					<input type="hidden" th:value="${TongTien}" name="tongtien" />
+					<button type="submit" class="btn btn-primary">Thanh toán</button>
+				</form>
+			</div>
+		
+			<div class="col-sm-4">
+		
+				<div th:each="item : ${ListProduct}">
+					<div class="row" style="margin-top: -10px; margin-bottom: -40px;">
+						<div class="col-sm-5">
+							<img class="img-thumbnail" th:src="@{'/getimage/'+${item.product.image}}"
+								style="width: 80px; height: 70px;margin-top: 10px">
+						</div>
+						<div class="col-sm-7"
+							style="font-size: 14px; padding: 0px; margin-left: -50px; margin-right: 0px;">
+							<ul style="line-height: 30px;">
+								<label style="margin-top: 0px;margin-bottom: 0px;" th:text="'Tên sản phẩm:' + ${item.product.tensanpham}"></label><br>
+								<label style="margin-top: 0px;margin-bottom: 0px;" th:text="'Giá tiền:' + ${item.giatien}"></label><br>
+								<label style="margin-top: 0px;" th:text="'Số lượng:' + ${item.soluong}"></label>
+							</ul>
+						</div>
+					</div>
+					<hr style="margin-bottom: 10px;">
+				</div>
+				<p style="font-weight: bold;" th:text="'Tổng tiền: '+ ${TongTien}"></p>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

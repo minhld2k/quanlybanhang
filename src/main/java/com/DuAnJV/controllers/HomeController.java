@@ -35,6 +35,7 @@ public class HomeController {
 			String key = category.getCategorykey();
 			model.addAttribute(key, this.productService.findProductByCategory(category.getCategorykey(), 4, 0));
 		}
+		session.setAttribute("MENUHOME", lsCate);
 		session.setAttribute("PRODUCTSNEW", this.productService.findProductNew(4, 0));
 		return "trangchu/index";
 	}

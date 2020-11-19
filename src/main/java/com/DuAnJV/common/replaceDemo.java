@@ -18,7 +18,10 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.DuAnJV.dto.CartDTO;
 import com.DuAnJV.dto.GioHangDTO;
+import com.DuAnJV.models.Cart;
+import com.DuAnJV.models.CartDetail;
 import com.DuAnJV.models.Chucnang;
 import com.DuAnJV.models.Giohang;
 import com.DuAnJV.models.User;
@@ -174,7 +177,7 @@ public class replaceDemo {
     	return str.substring(1, str.length()-1);
     }
     
-    public static String getTrangThai(int trangthai) {
+    public static void setmap() {
     	if (mapTrangThai.size() == 0) {
     		mapTrangThai.put(0, "Chưa thanh toán");
         	mapTrangThai.put(1, "Đang xử lý");
@@ -182,13 +185,17 @@ public class replaceDemo {
         	mapTrangThai.put(3, "Chờ giao hàng");
         	mapTrangThai.put(4, "Đã thanh toán");
 		}
+    }
+    
+    public static String getTrangThai(int trangthai) {
+    	setmap();
     	return mapTrangThai.get(trangthai);
     }
     
     public static List<GioHangDTO> converttoDTO(List<Giohang> ls){
     	List<GioHangDTO> lsDto = new ArrayList<>();
     	for (Giohang gh : ls) {
-			GioHangDTO ghdto = new GioHangDTO(gh.getId(), gh.getSoluong(), getTrangThai(gh.getTrangthai()), gh.getNgayadd(), gh.getProduct(), gh.getCustomer());
+			GioHangDTO ghdto = new GioHangDTO(gh.getId(), gh.getSoluong(), getTrangThai(gh.getTrangthai()), gh.getNgayadd(), gh.getProduct(), gh.getCustomer(),gh.getGiatien());
 			lsDto.add(ghdto);
     	}
     	return lsDto;
@@ -197,9 +204,45 @@ public class replaceDemo {
     public static double SUM(List<Giohang> ls) {
     	double sum = 0;
     	for (Giohang giohang : ls) {
-			sum = sum + giohang.getSoluong() * giohang.getProduct().getGiatien();
+			sum = sum + giohang.getSoluong() * giohang.getGiatien();
 		}
     	return sum;
+    }
+    
+    public static List<CartDTO> converCarttoDTO(List<Cart> ls){
+    	List<CartDTO> lsdto = new ArrayList<>();
+    	for (Cart cart : ls) {
+			CartDTO cartdto = new CartDTO(cart.getId(), cart.getCustomer(), getTrangThai(cart.getTrangthai()),cart.getTongtien());
+			lsdto.add(cartdto);
+		}
+    	return lsdto;
+    }
+    
+    public static String renderChitiet(List<CartDetail> ls) {
+    	StringBuilder html = new StringBuilder();
+    	html.append("	<table class=\"table table-bordered\"> ")
+    		.append("		<thead> ")
+    		.append("			<tr> ")
+    		.append("				<th>Hình ảnh</th> ")
+    		.append("				<th>Tên sản phẩm</th> ")
+    		.append("				<th>Số lượng</th> ")
+    		.append("				<th>Giá bán</th> ")
+    		.append("			</tr> ")
+    		.append("		</thead> ")
+    		.append("		<tbody> ");
+    	for (CartDetail cartDetail : ls) {
+			html.append("		<tr> ")
+				.append("			<td width=\"100\"> ")
+				.append("				<img alt=\"\" src=\"/getimage/"+cartDetail.getProduct().getImage()+"\" width=\"80\" height=\"70\"> ")
+				.append("			</td> ")
+				.append("			<td>"+cartDetail.getProduct().getTensanpham()+"</td> ")
+				.append("			<td>"+cartDetail.getSoluong()+"</td> ")
+				.append("			<td>"+cartDetail.getGiatien()+"</td> ")
+				.append("		</tr> ");
+		}
+    	html.append("		</tbody> ")
+    		.append("	</table> ");
+    	return html.toString();
     }
 
 }

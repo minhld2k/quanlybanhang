@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{layouts/layout-admin}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+
+<script type="text/javascript" th:src="@{/js/cart.js}"></script>
+
+</head>
+<body>
+
+	<article layout:fragment="content-admin">
+		<div class="container">
+			<div class="row"
+				style="background-color: darkgrey; padding: 0; margin: 0; margin-bottom: 10px;">
+				<div class="col-sm-6">
+					<h3 style="padding: 0; margin-top: 10px;">Danh sách đơn hàng</h3>
+				</div>
+			</div>
+
+			<th:block th:if="${null==CARTS}">
+				<h3 style="text-align: center;" th:text="${session.MesListCart}"></h3>
+			</th:block>
+			<th:block th:unless="${null==CARTS}">
+				<form th:action="@{/donhang/deleteAll}" method="get" id="formDelete">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th><input id="selectAll" type="checkbox"></th>
+								<th>Mã đơn hàng</th>
+								<th>Người mua</th>
+								<th>Số tiền thanh toán</th>
+								<th>Trạng thái</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="item: ${CARTS}">
+								<td><input type="checkbox" name="id[]"
+									th:value="${item.id}"></td>
+								<td>
+									<label class="linkEdit" th:text="${item.id}"></label>
+									<div class="show-shitiet" id="" colspan="5">
+										<a href="javascript:void(0)" th:id="'tagChiTiet' + ${item.id}" th:onclick="|renderChitiet(${item.id})|"><span>Chi tiết</span></a>
+										<div th:class="'viewChiTiet' + ${item.id}" ></div>
+										<a href="javascript:void(0)" th:id="'tagCapNhat' + ${item.id}" onclick=""><span>cập nhật trạng thái</span></a>
+										<div th:class="'viewCapNhat' + ${item.id}" ></div>
+									</div>
+								</td>
+								<td th:text="${item.customer.fullname}"></td>
+								<td th:text="${item.tongtien}"></td>
+								<td th:text="${item.trangthai}"></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</form>
+				<div class="row">
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<form class="form-inline" action="/donhang/pagesize" method="post">
+							<input type="number" placeholder="Nhập số dòng trên trang"
+								name="pagesize" class="form-control"
+								th:value="${session.PAGESIZE}" />
+							<button type="submit" class="btn btn-primary"
+								style="margin-left: 10px;">Hiển thị</button>
+						</form>
+					</div>
+
+					<div class="col-sm-4" style="text-align: center;">
+						<ul class="pagination justify-content-center">
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled' : 'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${1}|}">First</a>
+							</li>
+							<li
+								th:class="${currentIndex == 1}? 'page-item disabled': 'page-item' ">
+								<a class="page-link" aria-label="Previous"
+								th:href="@{|${baseUrl}${currentIndex - 1}|}"
+								title='Go to previous page'><span aria-hidden="true">«</span>
+									<span class="sr-only">Previous</span></a>
+							</li>
+							<li th:each="item : ${#numbers.sequence(beginIndex,endIndex)}"
+								th:class="${item == currentIndex ? 'page-item active' :'page-item' }">
+								<a class="page-link" th:href="@{|${baseUrl}${item}|}"> <span
+									th:text='${item}'>1</span>
+							</a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled': 'page-item'">
+								<a class="page-link" aria-label="Next"
+								th:href="@{|${baseUrl}${currentIndex + 1}|}"
+								title='Go to next page'><span aria-hidden="true">»</span> <span
+									class="sr-only">Next</span></a>
+							</li>
+							<li
+								th:class="${currentIndex == totalPageCount}? 'page-item disabled':'page-item'">
+								<a class="page-link" th:href="@{|${baseUrl}${totalPageCount}|}">Last</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="col-sm-4" style="margin-top: 20px;">
+						<p style="text-align: center">
+							TỔNG SỐ RECORD : <label th:text="${session.CountCart}"></label>
+						</p>
+					</div>
+
+				</div>
+			</th:block>
+		</div>
+	</article>
+</body>
+</html>
