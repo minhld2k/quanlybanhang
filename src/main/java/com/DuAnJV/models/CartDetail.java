@@ -32,13 +32,13 @@ public class CartDetail {
 	private Integer soluong;
 	
 	@Column
-	private Double giatien;
+	private Long giatien;
 	
 	public CartDetail() {
 		super();
 	}
 
-	public CartDetail(Long id, Cart cart, Product product, Integer soluong,Double giatien) {
+	public CartDetail(Long id, Cart cart, Product product, Integer soluong,Long giatien) {
 		super();
 		this.id = id;
 		this.cart = cart;
@@ -79,11 +79,11 @@ public class CartDetail {
 		this.soluong = soluong;
 	}
 
-	public Double getGiatien() {
+	public Long getGiatien() {
 		return giatien;
 	}
 
-	public void setGiatien(Double giatien) {
+	public void setGiatien(Long giatien) {
 		this.giatien = giatien;
 	}
 	

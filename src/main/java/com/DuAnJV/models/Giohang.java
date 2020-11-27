@@ -43,13 +43,13 @@ public class Giohang {
 	private Customer customer;
 	
 	@Column
-	private Double giatien;
+	private Long giatien;
 
 	public Giohang() {
 		super();
 	}
 
-	public Giohang(Long id, Integer soluong, Integer trangthai, Date ngayadd, Product product, Customer customer,Double giatien) {
+	public Giohang(Long id, Integer soluong, Integer trangthai, Date ngayadd, Product product, Customer customer,Long giatien) {
 		super();
 		this.id = id;
 		this.soluong = soluong;
@@ -108,11 +108,11 @@ public class Giohang {
 		this.customer = customer;
 	}
 
-	public Double getGiatien() {
+	public Long getGiatien() {
 		return giatien;
 	}
 
-	public void setGiatien(Double giatien) {
+	public void setGiatien(Long giatien) {
 		this.giatien = giatien;
 	}
 	

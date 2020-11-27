@@ -26,4 +26,8 @@ public interface ProductService {
 
 	List<Object[]> findProductNew(int limit, int offset);
 
+	List<Object[]> findAllProductByName(String tensanpham, int limit, int offset);
+
+	List<Object[]> findAllHangsxByCateKey(String categorykey);
+
 }

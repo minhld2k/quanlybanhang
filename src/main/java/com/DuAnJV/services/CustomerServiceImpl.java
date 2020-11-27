@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.DuAnJV.common.replaceDemo;
 import com.DuAnJV.models.Customer;
-import com.DuAnJV.models.User;
 import com.DuAnJV.repositories.CommonRepository;
 import com.DuAnJV.repositories.CustomerRepository;
 

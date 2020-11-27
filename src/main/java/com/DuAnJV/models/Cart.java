@@ -30,13 +30,13 @@ public class Cart extends Common{
 	private Integer trangthai;
 	
 	@Column()
-	private Double tongtien;
+	private Long tongtien;
 
 	public Cart() {
 		super();
 	}
 
-	public Cart(Long id, Customer customer, Integer trangthai,Double tongtien) {
+	public Cart(Long id, Customer customer, Integer trangthai,Long tongtien) {
 		super();
 		this.id = id;
 		this.customer = customer;
@@ -68,11 +68,11 @@ public class Cart extends Common{
 		this.trangthai = trangthai;
 	}
 
-	public Double getTongtien() {
+	public Long getTongtien() {
 		return tongtien;
 	}
 
-	public void setTongtien(Double tongtien) {
+	public void setTongtien(Long tongtien) {
 		this.tongtien = tongtien;
 	}
 	

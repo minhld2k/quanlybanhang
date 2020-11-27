@@ -168,7 +168,7 @@ public class ProductController {
 	@RequestMapping(value = "/addNew", method = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET })
 	public String add(ModelMap model,HttpSession session,@RequestParam("id")Long id,
 			@RequestParam("tensanpham")String tensanpham,@RequestParam("soluong")Integer soluong,
-			@RequestParam("giatien")Double giatien,@RequestParam("ram")String ram,
+			@RequestParam("giatien")Long giatien,@RequestParam("ram")String ram,
 			@RequestParam("manhinh")String manhinh,@RequestParam("trangthai")Integer trangthai,
 			@RequestParam("image")MultipartFile image,@RequestParam("mota")String mota,
 			@RequestParam("category")Long categoryid,@RequestParam("hangsx")Long hangsxid) {
@@ -195,6 +195,7 @@ public class ProductController {
 		product.setUpdateday(new Timestamp(new Date().getTime()));
 		product.setCategory(this.categoryService.findById(categoryid));
 		product.setHangsx(this.hangsxService.findById(hangsxid));
+		product.setIsproductnew(1);
 		this.productService.add(product);
 		return "redirect:/sanpham/list";
 	}
@@ -268,7 +269,7 @@ public class ProductController {
 	@RequestMapping(value = "/updateAjax", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String updateAjax(@RequestParam("idAjax")Long id,@RequestParam("soluongAjax")Integer soluong,
-			@RequestParam("giatienAjax")Double giatien,HttpSession session) {
+			@RequestParam("giatienAjax")Long giatien,HttpSession session) {
 		Product product = this.productService.findById(id);
 		String ajaxResponse = "";
 		

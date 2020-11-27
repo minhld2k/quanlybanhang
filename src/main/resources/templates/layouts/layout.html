@@ -24,10 +24,9 @@
 					<a href="/"><img src="/images/logo-shop.jpg" alt="" /></a>
 				</div>
 				<div class="search_box">
-					<form>
-						<input type="text" value="Search" onfocus="this.value = '';"
-							onblur="if (this.value == '') {this.value = 'Search';}"><input
-							type="submit" value="">
+					<form action="/timkiem" method="post">
+						<input type="text" name="tensanpham" th:value="${keySearch}" placeholder="Nhập tên sản phẩm tìm kiếm">
+						<input type="submit" value="">
 					</form>
 				</div>
 				<a href="/giohang/list" class="btn-cart" type="button">
@@ -62,6 +61,17 @@
 						
 					</ul>
 		     	</div>
+		     	<div class="clear"></div>
+		     	
+		     	<th:block th:unless="${HangSxs == null}">
+			     	<div class="menu" style="float: left;">
+			     		<ul>
+			     			<th:block th:each="item: ${HangSxs}">
+					    		<li><a th:href="@{'/'+${cateKey}+'/'+${item[2]}}" th:text="${item[1]}"></a></li>
+					    	</th:block>
+		     			</ul>
+			     	</div>
+		     	</th:block>
 				<div class="clear"></div>
 			</div>
 			<div class="header_slide" layout:fragment="slide-home">

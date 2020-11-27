@@ -12,11 +12,11 @@ public class GioHangDTO {
 	private Date ngayadd;
 	private Product product;
 	private Customer customer;
-	private Double giatien;
+	private Long giatien;
 	public GioHangDTO() {
 		super();
 	}
-	public GioHangDTO(long id, int soluong, String trangthai, Date ngayadd, Product product, Customer customer,Double giatien) {
+	public GioHangDTO(long id, int soluong, String trangthai, Date ngayadd, Product product, Customer customer,Long giatien) {
 		super();
 		this.id = id;
 		this.soluong = soluong;
@@ -62,10 +62,10 @@ public class GioHangDTO {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public Double getGiatien() {
+	public Long getGiatien() {
 		return giatien;
 	}
-	public void setGiatien(Double giatien) {
+	public void setGiatien(Long giatien) {
 		this.giatien = giatien;
 	}
 	

@@ -20,7 +20,6 @@ import com.DuAnJV.models.Cart;
 import com.DuAnJV.models.CartDetail;
 import com.DuAnJV.models.Customer;
 import com.DuAnJV.models.Giohang;
-import com.DuAnJV.models.Product;
 import com.DuAnJV.models.User;
 import com.DuAnJV.services.CartDetailService;
 import com.DuAnJV.services.CartService;
@@ -90,7 +89,8 @@ public class CartController {
 					model.addAttribute("currentIndex", pageNumber);
 					model.addAttribute("totalPageCount", end);
 					model.addAttribute("baseUrl", "/donhang/list?page=");
-					model.addAttribute("CARTS",replaceDemo.converCarttoDTO(this.cartService.findAll(pageSize, (pageNumber - 1) * pageSize)));
+					model.addAttribute("CARTS",replaceDemo.converCarttoDTO(this.cartService.findAll(0,pageSize, (pageNumber - 1) * pageSize)));
+					model.addAttribute("TRANGTHAIS",replaceDemo.convertMapToList());
 				}
 				return "view-cart";
 			}
@@ -110,7 +110,7 @@ public class CartController {
 	@RequestMapping("/cart/save")
 	public String saveCart(HttpSession session,@RequestParam(value = "fullname")String fullname
 			,@RequestParam(value = "phone") String phone,@RequestParam(value = "address")String address
-			,@RequestParam(value = "tongtien")double tongtien) {
+			,@RequestParam(value = "tongtien")long tongtien) {
 		Customer customer = (Customer) session.getAttribute("UserHome");
 		List<Giohang> ls = this.gioHangService.findAll(customer.getId(), 0, 0);
 		
@@ -147,7 +147,15 @@ public class CartController {
 	@ResponseBody
 	public String renderChitiet(@RequestParam("cartid")Long cartid) {
 		List<CartDetail> ls =  this.cartDetailService.findAllByCartId(cartid);
-		return replaceDemo.renderChitiet(ls);
+		return replaceDemo.renderChitiet(ls,this.cartService.findById(cartid));
+	}
+	
+	@RequestMapping("/cart/capnhat")
+	public String capNhatTrangThai(@RequestParam("cartid")long cartid,@RequestParam("trangthai")int trangthai) {
+		Cart cart = this.cartService.findById(cartid);
+		cart.setTrangthai(trangthai);
+		this.cartService.save(cart);
+		return "redirect:/donhang/list";
 	}
 
 }

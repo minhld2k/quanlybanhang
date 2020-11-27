@@ -1,7 +1,6 @@
 package com.DuAnJV.controllers;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,17 +9,16 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.DuAnJV.common.replaceDemo;
-import com.DuAnJV.models.Chucnang;
+import com.DuAnJV.models.Cart;
 import com.DuAnJV.models.Customer;
-import com.DuAnJV.models.Role;
 import com.DuAnJV.models.User;
+import com.DuAnJV.services.CartService;
 import com.DuAnJV.services.CustomerService;
 import com.DuAnJV.services.UserService;
 
@@ -29,6 +27,9 @@ import com.DuAnJV.services.UserService;
 public class CustomerController {
 	@Autowired
 	CustomerService customerService;
+	
+	@Autowired
+	CartService cartService;
 	
 	@Autowired
 	UserService userService;
@@ -206,6 +207,13 @@ public class CustomerController {
 		model.addAttribute("CUSTOMER",cus);
 		model.addAttribute("TITLE","Cập nhật tài khoản");
 		model.addAttribute("button","Cập nhật");
-		return "trangchu/customer-detail";
+		
+		List<Cart> ls = this.cartService.findCartByCusIdandTrangThai(cusLogin.getId(), 4);
+		if (ls.size() > 0) {
+			model.addAttribute("CARTS",replaceDemo.converCarttoDTO(ls));
+		}else {
+			session.setAttribute("MesListCart", "không có đơn hàng nào");
+		}
+		return "trangchu/edit-cus";
 	}
 }

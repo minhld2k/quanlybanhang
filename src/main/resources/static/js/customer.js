@@ -1,6 +1,37 @@
 /**
  * 
  */
+$(document).ready(function() {
+	$('#genderfind').multiselect({
+		nonSelectedText : 'Chọn Giới tính',
+		enableFiltering : true,
+		enableCaseInsensitiveFiltering : true,
+		includeSelectAllOption : true,
+		buttonWidth : '100%'
+	});
+});
+
+function renderChitiet(id){
+	var element1 = document.getElementById('viewChiTiet'+id);
+	if (element1.style.display === "none") {
+		$.ajax({
+			type : "GET",
+			contentType : "application/json",
+			url : "/renderchitiet",
+			data : {
+				cartid : id
+			},
+			dataType : "html",
+			timeout : 10000,
+			success : function(data) {
+				element1.style.display = "block";
+				$('.viewChiTiet'+id).html(data);
+			},
+		});
+	}else{
+		element1.style.display = "none";
+	}
+}
 
 function formValidation() {
 	var email = $('#email').val();

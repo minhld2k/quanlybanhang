@@ -87,23 +87,32 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						</div>
 						<div class="see">
 							<p>
-								<a href="#">Xem tất cả</a>
+								<a th:href="@{'/'+${CateKey}}">Xem tất cả</a>
 							</p>
 						</div>
 						<div class="clear"></div>
 					</div>
 					<div class="section group">
-						<div class="grid_1_of_4 images_1_of_4">
-							<a href="#"><img src="images/new-pic1.jpg" alt=""></a>
-							<div class="price" style="border: none">
-								<div class="add-cart" style="float: none">
-									<h4>
-										<a href="#">Mua ngay</a>
-									</h4>
+						<th:block th:each="product : ${lsProByCate}">
+							<div class="grid_1_of_4 images_1_of_4">
+								<a th:href="@{'/detail/' + ${product[0].toString()}}"><img th:src="@{'/getimage/'+ ${product[1].toString()}}"
+									alt="" /></a>
+								<h2 th:text="${product[2].toString()}"></h2>
+								<div class="price-details">
+									<div class="price-number">
+										<p>
+											<span class="rupees" th:text="${product[4].toString()}"></span>
+										</p>
+									</div>
+									<div class="add-cart">
+										<h4>
+											<a th:href="@{'/detail/' + ${product[0].toString()}}">Mua ngay</a>
+										</h4>
+									</div>
+									<div class="clear"></div>
 								</div>
-								<div class="clear"></div>
 							</div>
-						</div>
+						</th:block>
 					</div>
 				</div>
 				<div class="rightsidebar span_3_of_1">

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.DuAnJV.common.replaceDemo;
 import com.DuAnJV.dto.CategoryDTO;
 import com.DuAnJV.models.Category;
+import com.DuAnJV.models.Product;
 import com.DuAnJV.services.CategoryService;
 import com.DuAnJV.services.ProductService;
 
@@ -74,20 +76,84 @@ public class HomeController {
 			model.addAttribute("totalPageCount", end);
 			model.addAttribute("baseUrl", "/"+categorykey+"?page=");
 			model.addAttribute("lsProByCate",this.productService.findProductByCategory(categorykey, pageSize, (pageNumber - 1) * pageSize));
-
+			model.addAttribute("cateKey",categorykey);
 		}
 		session.setAttribute("CountProByCate", count);
     	session.setAttribute("Title", this.categoryService.findByKey(categorykey).getCategoryname());
     	return "trangchu/view-product-cate";
     }
     
+    @RequestMapping(value = "/sanphammoi")
+    public String findProductNew(Model model,@RequestParam(name = "page", required = false) Integer pageNumber, HttpSession session) {
+    	if (null == pageNumber || pageNumber < 1) {
+			pageNumber = 1;
+		}
+    	long count = this.productService.findProductNew(-1, -1).size();
+    	int pageSize = 9;
+    	if (0 == count) {
+			session.setAttribute("MESLIST", "Không có sản phẩm nào");
+		} else {
+			long end = 0;
+			if (0 == count % pageSize) {
+				end = count / pageSize;
+			} else {
+				end = count / pageSize + 1;
+			}
+			model.addAttribute("beginIndex", 1);
+			model.addAttribute("endIndex", end);
+			model.addAttribute("currentIndex", pageNumber);
+			model.addAttribute("totalPageCount", end);
+			model.addAttribute("baseUrl", "/new?page=");
+			model.addAttribute("lsProByCate",this.productService.findProductNew(pageSize, (pageNumber - 1) * pageSize));
+
+		}
+		session.setAttribute("CountProByCate", count);
+    	session.setAttribute("Title", "Sản phẩm mới");
+    	return "trangchu/view-product-cate";
+    }
+    
     @GetMapping(value = "/detail/{id}")
-    public String productDetail( @PathVariable(name = "id")long id,HttpSession session) {
-    	session.setAttribute("ProductDetail",this.productService.findById(id));
+    public String productDetail( @PathVariable(name = "id")long id,HttpSession session,ModelMap model) {
+    	Product pro = this.productService.findById(id);
+    	session.setAttribute("ProductDetail",pro);
+    	model.addAttribute("lsProByCate",this.productService.findProductByCategory(pro.getCategory().getCategorykey(), 4, 0));
+    	model.addAttribute("CateKey",pro.getCategory().getCategorykey());
     	return "trangchu/preview";
     }
+    
     @RequestMapping("/preview")
     public String preview() {
     	return "trangchu/preview";
+    }
+    
+    @RequestMapping("/timkiem")
+    public String timkiem(@RequestParam("tensanpham")String tensanpham,Model model
+    		,@RequestParam(name = "page", required = false) Integer pageNumber, HttpSession session) {
+    	if (null == pageNumber || pageNumber < 1) {
+			pageNumber = 1;
+		}
+    	model.addAttribute("keySearch",tensanpham);
+    	tensanpham = replaceDemo.replace(tensanpham);
+    	long count = this.productService.findAllProductByName(tensanpham, -1, -1).size();
+    	int pageSize = 9;
+    	if (0 == count) {
+			session.setAttribute("MESLIST", "Không có sản phẩm nào");
+		} else {
+			long end = 0;
+			if (0 == count % pageSize) {
+				end = count / pageSize;
+			} else {
+				end = count / pageSize + 1;
+			}
+			model.addAttribute("beginIndex", 1);
+			model.addAttribute("endIndex", end);
+			model.addAttribute("currentIndex", pageNumber);
+			model.addAttribute("totalPageCount", end);
+			model.addAttribute("baseUrl", "/new?page=");
+			model.addAttribute("lsProByCate",this.productService.findAllProductByName(tensanpham,pageSize, (pageNumber - 1) * pageSize));
+		}
+		session.setAttribute("CountProByCate", count);
+    	session.setAttribute("Title", "Sản phẩm tìm kiếm");
+    	return "trangchu/view-product-cate";
     }
 }

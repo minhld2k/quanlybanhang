@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.DuAnJV.dto.CartDTO;
@@ -30,6 +28,7 @@ public class replaceDemo {
 
 	public static Map<String, String> mapFromFile = new HashMap<String, String>();
 	public static Map<Integer, String> mapTrangThai = new HashMap<Integer, String>();
+	public static List<Object[]> lsTrangThai = new ArrayList<Object[]>();
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 //		System.out.println("=>"+replace("sam sung"));
@@ -72,7 +71,9 @@ public class replaceDemo {
 					search = temp;
 				}else {
 					search = search.replace(" ", "&").trim();
-					result = result + "(" + search + ")" + "|";
+					if (!search.isEmpty()) {
+						result = result + "(" + search + ")" + "|";
+					}
 					search = arr[i];
 				}
 			}
@@ -178,7 +179,7 @@ public class replaceDemo {
     }
     
     public static void setmap() {
-    	if (mapTrangThai.size() == 0) {
+    	if (0 == mapTrangThai.size()) {
     		mapTrangThai.put(0, "Chưa thanh toán");
         	mapTrangThai.put(1, "Đang xử lý");
         	mapTrangThai.put(2, "Đã xử lý");
@@ -186,6 +187,18 @@ public class replaceDemo {
         	mapTrangThai.put(4, "Đã thanh toán");
 		}
     }
+    
+    public static List<Object[]> convertMapToList(){
+    	if (0 == lsTrangThai.size()) {
+			for (int i = 0; i < mapTrangThai.size(); i++) {
+				Object[] ob = new Object[2];
+				ob[0] = i;
+				ob[1] = mapTrangThai.get(i);
+				lsTrangThai.add(ob);
+			}
+		}
+    	return lsTrangThai;
+    }	
     
     public static String getTrangThai(int trangthai) {
     	setmap();
@@ -212,15 +225,23 @@ public class replaceDemo {
     public static List<CartDTO> converCarttoDTO(List<Cart> ls){
     	List<CartDTO> lsdto = new ArrayList<>();
     	for (Cart cart : ls) {
-			CartDTO cartdto = new CartDTO(cart.getId(), cart.getCustomer(), getTrangThai(cart.getTrangthai()),cart.getTongtien());
+			CartDTO cartdto = new CartDTO(cart.getId(), cart.getCustomer(), getTrangThai(cart.getTrangthai()),cart.getTongtien(),cart.getTrangthai());
 			lsdto.add(cartdto);
 		}
     	return lsdto;
     }
     
-    public static String renderChitiet(List<CartDetail> ls) {
+    public static String renderChitiet(List<CartDetail> ls,Cart cart) {
     	StringBuilder html = new StringBuilder();
     	html.append("	<table class=\"table table-bordered\"> ")
+	    	.append("		<thead> ")
+			.append("			<tr> ")
+			.append("				<th>Người mua:</th> ")
+			.append("				<td>"+cart.getCustomer().getFullname()+"</th> ")
+			.append("				<th>Số tiền thanh toán:</th> ")
+			.append("				<td>"+cart.getTongtien()+"</th> ")
+			.append("			</tr> ")
+			.append("		</thead> ")
     		.append("		<thead> ")
     		.append("			<tr> ")
     		.append("				<th>Hình ảnh</th> ")
@@ -244,5 +265,5 @@ public class replaceDemo {
     		.append("	</table> ");
     	return html.toString();
     }
-
+    
 }

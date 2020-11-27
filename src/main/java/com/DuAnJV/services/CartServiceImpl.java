@@ -14,8 +14,8 @@ public class CartServiceImpl implements CartService{
 	CartRepository cartRepository;
 
 	@Override
-	public List<Cart> findAll(int limit, int offset) {
-		return cartRepository.findAll(limit, offset);
+	public List<Cart> findAll(int trangthai,int limit, int offset) {
+		return cartRepository.findAll(trangthai,limit, offset);
 	}
 
 	@Override
@@ -32,5 +32,12 @@ public class CartServiceImpl implements CartService{
 	public Cart save(Cart entity) {
 		return cartRepository.save(entity);
 	}
+
+	@Override
+	public List<Cart> findCartByCusIdandTrangThai(long cusid, int trangthai) {
+		return cartRepository.findCartByCusIdandTrangThai(cusid, trangthai);
+	}
+	
+	
 
 }

@@ -98,10 +98,8 @@ public class CommonRepository {
 		   .append(" WHERE pro.isdelete = 0 AND pro.isproductnew = 1");
 		
 		str.append(" ORDER BY pro.creatday desc ");
-		if (limit > 0 && offset >0) {
+		if (limit > 0) {
 			str.append(" LIMIT "+limit+" OFFSET "+offset);
-		}else if(limit > 0 && offset < 0){
-			str.append(" LIMIT "+limit+" OFFSET 0");
 		}
 		
 		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
@@ -174,9 +172,6 @@ public class CommonRepository {
 			objects[4] = map.get("giatien").toString();
 			lsProduct.add(objects);
 		}
-		
-		System.out.println("sql: "+str.toString());
-		
 		return lsProduct;
 	}
 	
@@ -212,11 +207,59 @@ public class CommonRepository {
 			objects[6] = map.get("birthday") == null  ? "" : map.get("birthday").toString();
 			lsCus.add(objects);
 		}
-		
-		System.out.println(sql.toString());
-		
 		return lsCus;
 		
+	}
+	
+	public List<Object[]> findAllHangsxByCateKey(String categorykey){
+		List<Object[]> lsCus = new ArrayList<>();
+		StringBuilder sql = new StringBuilder(" select h.id,h.name,h.key from qtht_hangsx h ");
+		sql.append(" inner join category_hangsx ch on h.id = ch.hangsxid ")
+			.append(" inner join qtht_categories c on c.id = ch.categoryid ")
+			.append(" where h.isdelete = 0 and c.categorykey = '"+categorykey+"' ");
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(sql.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[3];
+			objects[0] = Long.parseLong(map.get("id").toString());
+			objects[1] = map.get("name").toString();
+			objects[2] = map.get("key").toString();
+			lsCus.add(objects);
+		}
+		return lsCus;
+	}
+	
+	public List<Object[]> findAllProductByName(String tensanpham,int limit ,int offset){
+		List<Object[]> lsProduct = new ArrayList<>();
+		StringBuilder str = new StringBuilder();
+		str.append(" SELECT ")
+		   .append("	pro.id, pro.image, pro.tensanpham, pro.soluong, pro.giatien ")
+		   .append(" FROM qlsp_products pro ")
+		   .append(" WHERE pro.isdelete = 0 ");
+		if (!tensanpham.isEmpty()) {
+			str.append(" AND to_tsquery('"+tensanpham+"') @@ pro.fulltext_ ");
+		}
+		
+		if (!tensanpham.isEmpty()) {
+			str.append(" ORDER BY ts_rank_cd(pro.fulltext_, to_tsquery('"+tensanpham+"'))desc ");
+		}else {
+			str.append(" ORDER BY pro.creatday desc ");
+		}
+		if (limit > 0) {
+			str.append(" LIMIT "+limit+" OFFSET "+offset);
+		}
+		
+		List<Map<String, Object>> rows = _jdbcTemplate.queryForList(str.toString());
+		for (Map<String, Object> map : rows) {
+			Object[] objects = new Object[5];
+			objects[0] = Long.parseLong(map.get("id").toString());
+			objects[1] = map.get("image").toString();
+			objects[2] = map.get("tensanpham").toString();
+			objects[3] = map.get("soluong").toString();
+			objects[4] = map.get("giatien").toString();
+			lsProduct.add(objects);
+		}
+		return lsProduct;
 	}
 	
 }

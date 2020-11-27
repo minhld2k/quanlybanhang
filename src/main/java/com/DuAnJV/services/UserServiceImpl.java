@@ -3,7 +3,6 @@ package com.DuAnJV.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.DuAnJV.common.replaceDemo;
@@ -226,7 +225,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Cacheable(value = "findAllChucNangByEmail" ,key = "#email")
 	public User findUserByEmail(String email) {
 		User user = this.findByEmail(email);
 		List<Chucnang> lscn = this.chucNangService.findAllChucnangByEmail(email);

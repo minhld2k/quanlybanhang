@@ -6,17 +6,19 @@ public class CartDTO {
 	private long id;
 	private Customer customer;
 	private String trangthai;
-	private Double tongtien;
+	private Long tongtien;
+	private int trangthaiso;
 	
 	public CartDTO() {
 		super();
 	}
-	public CartDTO(long id, Customer customer, String trangthai,Double tongtien) {
+	public CartDTO(long id, Customer customer, String trangthai,Long tongtien,int trangthaiso) {
 		super();
 		this.id = id;
 		this.customer = customer;
 		this.trangthai = trangthai;
 		this.tongtien = tongtien;
+		this.trangthaiso = trangthaiso;
 	}
 	public long getId() {
 		return id;
@@ -36,11 +38,17 @@ public class CartDTO {
 	public void setTrangthai(String trangthai) {
 		this.trangthai = trangthai;
 	}
-	public Double getTongtien() {
+	public Long getTongtien() {
 		return tongtien;
 	}
-	public void setTongtien(Double tongtien) {
+	public void setTongtien(Long tongtien) {
 		this.tongtien = tongtien;
+	}
+	public int getTrangthaiso() {
+		return trangthaiso;
+	}
+	public void setTrangthaiso(int trangthaiso) {
+		this.trangthaiso = trangthaiso;
 	}
 	
 }

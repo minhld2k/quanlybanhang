@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -126,10 +127,18 @@ public class LoginController {
 	
 	// clear all cache using cache manager
     @RequestMapping(value = "clearCache")
+    @Scheduled(cron = "0 0/5 * * * ?")
 	public void clearCache(){
         for(String name:cacheManager.getCacheNames()){
             cacheManager.getCache(name).clear();            // clear cache by name
         }
+        logger.error("clear cachinh");
     }
+    
+    @RequestMapping("/dangxuat")
+    public String dangxuat(HttpSession session, ModelMap model) {
+		session.removeAttribute("UserHome");
+		return "redirect:/";
+	}
     
 }

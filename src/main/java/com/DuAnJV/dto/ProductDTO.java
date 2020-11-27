@@ -2,10 +2,6 @@ package com.DuAnJV.dto;
 
 import java.util.Date;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductDTO {
@@ -13,7 +9,7 @@ public class ProductDTO {
 	private Long id;
 	private String tensanpham;
 	private Integer soluong;
-	private Double giatien;
+	private Long giatien;
 	private String ram;
 	private String manhinh;
 	
@@ -26,7 +22,7 @@ public class ProductDTO {
 	public ProductDTO() {
 		super();
 	}
-	public ProductDTO(Long id, String tensanpham, Integer soluong, Double giatien, String ram, String manhinh,
+	public ProductDTO(Long id, String tensanpham, Integer soluong, Long giatien, String ram, String manhinh,
 			Date ngaythem, Integer trangthai, MultipartFile image, String mota, Long hangsxid, Long categoryid) {
 		super();
 		this.id = id;
@@ -59,10 +55,10 @@ public class ProductDTO {
 	public void setSoluong(Integer soluong) {
 		this.soluong = soluong;
 	}
-	public Double getGiatien() {
+	public Long getGiatien() {
 		return giatien;
 	}
-	public void setGiatien(Double giatien) {
+	public void setGiatien(Long giatien) {
 		this.giatien = giatien;
 	}
 	public String getRam() {

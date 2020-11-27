@@ -12,6 +12,8 @@ public interface CartService {
 
 	long countAll();
 
-	List<Cart> findAll(int limit, int offset);
+	List<Cart> findAll(int trangthai,int limit, int offset);
+
+	List<Cart> findCartByCusIdandTrangThai(long cusid, int trangthai);
 
 }

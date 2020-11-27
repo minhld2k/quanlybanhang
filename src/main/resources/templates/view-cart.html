@@ -25,39 +25,48 @@
 				<h3 style="text-align: center;" th:text="${session.MesListCart}"></h3>
 			</th:block>
 			<th:block th:unless="${null==CARTS}">
-				<form th:action="@{/donhang/deleteAll}" method="get" id="formDelete">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th><input id="selectAll" type="checkbox"></th>
-								<th>Mã đơn hàng</th>
-								<th>Người mua</th>
-								<th>Số tiền thanh toán</th>
-								<th>Trạng thái</th>
-							</tr>
-						</thead>
-						<tbody>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th><input id="selectAll" type="checkbox"></th>
+							<th>Mã đơn hàng</th>
+							<th>Trạng thái</th>
+						</tr>
+					</thead>
+					<tbody>
 
-							<tr th:each="item: ${CARTS}">
-								<td><input type="checkbox" name="id[]"
-									th:value="${item.id}"></td>
-								<td>
-									<label class="linkEdit" th:text="${item.id}"></label>
-									<div class="show-shitiet" id="" colspan="5">
-										<a href="javascript:void(0)" th:id="'tagChiTiet' + ${item.id}" th:onclick="|renderChitiet(${item.id})|"><span>Chi tiết</span></a>
-										<div th:class="'viewChiTiet' + ${item.id}" ></div>
-										<a href="javascript:void(0)" th:id="'tagCapNhat' + ${item.id}" onclick=""><span>cập nhật trạng thái</span></a>
-										<div th:class="'viewCapNhat' + ${item.id}" ></div>
+						<tr th:each="item: ${CARTS}">
+							<td><input type="checkbox" name="id[]"
+								th:value="${item.id}"></td>
+							<td style="width: 70%">
+								<label class="linkEdit" th:text="${item.id}"></label>
+								<div class="show-shitiet">
+									<a href="javascript:void(0)" th:id="'tagChiTiet' + ${item.id}" th:onclick="|renderChitiet(${item.id})|"><span>Chi tiết</span></a>
+									<a href="javascript:void(0)" th:id="'tagCapNhat' + ${item.id}" th:onclick="|renderTrangThai(${item.id})|"><span>Cập nhật trạng thái</span></a>
+									<div th:class="'viewChiTiet' + ${item.id}" th:id="'viewChiTiet' + ${item.id}" style="display: none;"></div>
+									<div th:class="'viewCapNhat' + ${item.id}" th:id="'viewCapNhat' + ${item.id}" style="display: none;padding-top: 10px;">
+										<form action="/cart/capnhat" method="post">
+											<input type="hidden" name="cartid" th:value="${item.id}"/>
+											<input type="hidden" th:id="'trangthai'+${item.id}" th:value="${item.trangthaiso}"/>
+											<div class="col-sm-5" style="display: inline-flex;padding-left: 0px;">
+												<label for="name" class="col-sm-6" style="padding-top: 10px;">Trạng thái:</label> 
+										        <select class="form-control" id="trangthai" name="trangthai" >
+													<option th:each="item: ${TRANGTHAIS}"
+															th:value="${item[0]}" th:text="${item[1]}"></option>
+												</select>
+											</div>
+											<div class="col-sm-5">
+												<button type="submit" class="btn btn-primary" id="add">Lưu</button>
+											</div>
+										</form>
 									</div>
-								</td>
-								<td th:text="${item.customer.fullname}"></td>
-								<td th:text="${item.tongtien}"></td>
-								<td th:text="${item.trangthai}"></td>
-							</tr>
+								</div>
+							</td>
+							<td th:text="${item.trangthai}" style="width: 20%"></td>
+						</tr>
 
-						</tbody>
-					</table>
-				</form>
+					</tbody>
+				</table>
 				<div class="row">
 					<div class="col-sm-4" style="margin-top: 20px;">
 						<form class="form-inline" action="/donhang/pagesize" method="post">

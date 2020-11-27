@@ -31,7 +31,7 @@ public class Product extends Common{
 	private Integer soluong;
 	
 	@Column
-	private Double giatien;
+	private Long giatien;
 	
 	@Column
 	private String ram;
@@ -48,6 +48,9 @@ public class Product extends Common{
 	@Column
 	private String mota;
 	
+	@Column
+	private Integer isproductnew;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hangsxid")
 	private Hangsx hangsx;
@@ -61,7 +64,7 @@ public class Product extends Common{
 		super();
 	}
 
-	public Product(Long id, String tensanpham, Integer soluong, Double giatien, String ram, String manhinh,
+	public Product(Long id, String tensanpham, Integer soluong, Long giatien, String ram, String manhinh,
 			Integer trangthai, String image, String mota, Hangsx hangsx, Category category) {
 		super();
 		this.id = id;
@@ -77,7 +80,7 @@ public class Product extends Common{
 		this.category = category;
 	}
 	
-	public Product(Long id, String tensanpham, Integer soluong, Double giatien, String ram, String manhinh,
+	public Product(Long id, String tensanpham, Integer soluong, Long giatien, String ram, String manhinh,
 			Integer trangthai, String image, String mota) {
 		super();
 		this.id = id;
@@ -92,7 +95,7 @@ public class Product extends Common{
 	}
 
 	public Product(Byte isdelete, String creatby, Date creatday, String updateby, Date updateday, Long id,
-			String tensanpham, Integer soluong, Double giatien, String ram, String manhinh,
+			String tensanpham, Integer soluong, Long giatien, String ram, String manhinh,
 			Integer trangthai, String image, String mota, Hangsx hangsx, Category category) {
 		super(isdelete, creatby, creatday, updateby, updateday);
 		this.id = id;
@@ -132,11 +135,11 @@ public class Product extends Common{
 		this.soluong = soluong;
 	}
 
-	public Double getGiatien() {
+	public Long getGiatien() {
 		return giatien;
 	}
 
-	public void setGiatien(Double giatien) {
+	public void setGiatien(Long giatien) {
 		this.giatien = giatien;
 	}
 
@@ -194,6 +197,14 @@ public class Product extends Common{
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Integer getIsproductnew() {
+		return isproductnew;
+	}
+
+	public void setIsproductnew(Integer isproductnew) {
+		this.isproductnew = isproductnew;
 	}
 	
 }
